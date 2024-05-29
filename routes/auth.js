@@ -108,4 +108,28 @@ router.get('/:username', async (req, res) => {
   }
 });
 
+
+
+
+router.get('/:username_profile', async (req, res) => {
+  try {
+    const { username } = req.params;
+    
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({
+      username: user.username,
+      email: user.email,
+      profileImageUrl: user.profileImageUrl,
+    });
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 module.exports = router;
