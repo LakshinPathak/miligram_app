@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Feed</title>
+</head>
+
+<body>
+  <!-- Navigation bar -->
+  <div class="navbar">
+    <div class="container">
+      <div class="logo">
+        <img class="c-panel__img" src="assets/img/instagram.svg" alt="Instagram">
+      </div>
+      <div class="searchbar">
+        <input type="text" placeholder="Search...">
+      </div>
+      <div class="nav-links">
+        <ul class="nav-group">
+          <li class="nav-item"><a href="#">Home</a></li>
+          <li class="nav-item"><a href="#">Profile</a></li>
+          <li class="nav-item"><a href="#">Messages</a></li>
+        </ul>
+      </div>
+      <div class="action">
+        <div class="profile">
+          <div class="profile_img">
+            <img id="profileImage" src="#" alt="Profile Image">
+          </div>
+        </div>
+      </div>
+      <!-- Display username here -->
+      <div class="username">
+        <p>Welcome, <span id="username1"></span></p>
+      </div>
+
+      <div class="logout">
+        <a href="/index.html">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <main>
+    <div class="container">
+      <!-- Feed -->
+      <div class="col-9">
+        <div class="statuses">
+          <!-- Statuses will be dynamically loaded here -->
+        </div>
+      </div>
+
+      <!-- Suggestions panel -->
+      <div class="col-3">
+        <h4>Suggestions For You</h4>
+        <div class="card">
+          <!-- Suggestions will be dynamically loaded here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isScript1 = urlParams.get("script1") === "true";
+
+      if (isScript1) {
+        const username = urlParams.get("fusername");
+        console.log(username)
+        document.getElementById('username1').textContent = `${username}`;
+
+        try {
+          const response = await fetch(`/api/auth/${username}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+          });
+
+          const data = await response.json();
+          console.log(data);
+
+          if (data.profileImageUrl) {
+            document.getElementById('profileImage').src = data.profileImageUrl;
+          } else {
+            document.getElementById('profileImage').src = 'default-profile.png'; // Use a default image if no profile image is found
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+
+      // Your existing JavaScript code for loading feed, liking posts, and logging out
+      function loadFeed() {
+        fetch('/api/posts/feed', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            const feedContainer = document.getElementById('feed');
+            data.posts.forEach(post => {
+              const postCol = document.createElement('div');
+              postCol.className = 'col-md-4 mb-4';
+              const postCard = document.createElement('div');
+              postCard.className = 'card h-100';
+              const img = document.createElement('img');
+              img.src = post.image;
+              img.className = 'card-img-top post-img';
+              img.alt = 'Post Image';
+              const cardBody = document.createElement('div');
+              cardBody.className = 'card-body';
+              const caption = document.createElement('p');
+              caption.className = 'card-text post-caption';
+              caption.textContent = post.caption;
+              const likeBtn = document.createElement('button');
+              likeBtn.className = 'btn btn-primary like-btn';
+              likeBtn.textContent = 'Like';
+              likeBtn.onclick = function () {
+                likePost(post._id);
+              };
+              cardBody.appendChild(caption);
+              cardBody.appendChild(likeBtn);
+              postCard.appendChild(img);
+              postCard.appendChild(cardBody);
+              postCol.appendChild(postCard);
+              feedContainer.appendChild(postCol);
+            });
+          });
+      }
+
+      function likePost(postId) {
+        fetch(`/api/posts/${postId}/like`, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message === 'Post liked successfully') {
+              alert('Post liked');
+            } else {
+              alert(data.message);
+            }
+          });
+      }
+
+      function logOut() {
+        localStorage.removeItem('token');
+        window.location.href = 'index.html';
+      }
+
+      document.addEventListener('DOMContentLoaded', loadFeed);
+    });
+
+  </script>
+</body>
+
+</html>

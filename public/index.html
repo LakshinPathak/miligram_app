@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>MiliGram</title>
+</head>
+<body>
+  <main class="l-main">
+    <div class="l-main__img">
+      <img src="assets/img/homepage.png" alt="Smartphones">
+    </div>
+    <div class="l-user">
+      <div class="c-panel group">
+        <img class="c-panel__img" src="assets/img/instagram.svg" alt="Instagram">
+        <div class="c-panel__form">
+          <input type="email" class="c-panel__input" id="username" placeholder="Username"> <!-- Changed input type to email -->
+          <input type="password" class="c-panel__input" id="password" placeholder="Password">
+          <a href="#" class="c-btn" onclick="login()">Log In</a>
+          <span class="c-panel__span">OR</span>
+        </div>
+      </div>
+      <div class="c-signup group">
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+      </div>
+      <div class="c-app">
+        <p>Get the app.</p>
+        <div class="c-app__download">
+          <img src="assets/img/apple.png" alt="Apple Store">
+          <img src="assets/img/google.png" alt="Google Play">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function login() {
+      const username = document.getElementById('username').value; // Changed to get email input value
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password }) // Updated to send email and password
+        });
+
+        const data = await response.json();
+        console.log(data);
+        
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          const loggedInUser = document.getElementById('username').value;
+          console.log(loggedInUser);
+          window.location.href =  `feed.html?script1=true&fusername=${loggedInUser}`;
+
+         
+        } else {
+          alert(data.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <title>Signup</title>
+</head>
+<body>
+    <main class="l-main">
+        <div class="l-user">
+            <div class="c-panel group">
+                <img class="c-panel__img" src="assets/img/instagram.svg" alt="Instagram">
+                <div class="c-panel__form">
+                    <input type="text" class="c-panel__input" id="username" placeholder="Username">
+                    <input type="email" class="c-panel__input" id="email" placeholder="Email">
+                    <input type="password" class="c-panel__input" id="password" placeholder="Password">
+                    <input type="file" class="c-panel__input" id="profileImage" accept="image/*">
+                    <a href="#" class="c-btn" onclick="signup()">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function signup() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const profileImage = document.getElementById('profileImage').files[0];
+
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('profileImage', profileImage);
+
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                // console.log(data)
+               
+                  console.log("hiiiiii")
+                    alert('Signup successful!');
+                    window.location.href = `index.html`;
+              
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>Create Post - MiliGram</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="feed.html">Feed</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" onclick="logOut()">Log Out</a>
+    </nav>
+  </header>
+  <main class="create-post">
+    <h2>Create New Post</h2>
+    <input type="file" id="post-image" accept="image/*">
+    <textarea id="post-caption" placeholder="Write a caption..."></textarea>
+    <button onclick="createPost()">Post</button>
+  </main>
+
+  <script>
+    function createPost() {
+      const image = document.getElementById('post-image').files[0];
+      const caption = document.getElementById('post-caption').value;
+      const formData = new FormData();
+      formData.append('image', image);
+      formData.append('caption', caption);
+
+      fetch('/api/posts', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Post created successfully') {
+          window.location.href = 'feed.html';
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+
+    function logOut() {
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>Post Detail - MiliGram</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="feed.html">Feed</a>
+      <a href="profile.html">Profile</a>
+      <a href="create-post.html">Create Post</a>
+      <a href="#" onclick="logOut()">Log Out</a>
+    </nav>
+  </header>
+  <main class="post-detail">
+    <div class="post" id="post">
+      <!-- Post details will be loaded here -->
+    </div>
+    <div class="comments" id="comments">
+      <!-- Comments will be loaded here -->
+    </div>
+    <textarea id="comment-text" placeholder="Write a comment..."></textarea>
+    <button onclick="addComment()">Comment</button>
+  </main>
+
+  <script>
+    const postId = new URLSearchParams(window.location.search).get('id');
+
+    function loadPost() {
+      fetch(`/api/posts/${postId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        const postContainer = document.getElementById('post');
+        postContainer.innerHTML = `
+          <img src="${data.image}" alt="Post Image">
+          <p>${data.caption}</p>
+        `;
+        loadComments();
+      });
+    }
+
+    function loadComments() {
+      fetch(`/api/posts/${postId}/comments`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        const commentsContainer = document.getElementById('comments');
+        commentsContainer.innerHTML = '';
+        data.comments.forEach(comment => {
+          const commentElement = document.createElement('div');
+          commentElement.className = 'comment';
+          commentElement.innerHTML = `
+            <p>${comment.text}</p>
+          `;
+          commentsContainer.appendChild(commentElement);
+        });
+      });
+    }
+
+    function addComment() {
+      const text = document.getElementById('comment-text').value;
+      fetch(`/api/posts/${postId}/comments`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Comment added successfully') {
+          document.getElementById('comment-text').value = '';
+          loadComments();
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+
+    function logOut() {
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', loadPost);
+  </script>
+</body>
+</html>

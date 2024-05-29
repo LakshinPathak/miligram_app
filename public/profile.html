@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>Profile - MiliGram</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="feed.html">Feed</a>
+      <a href="create-post.html">Create Post</a>
+      <a href="#" onclick="logOut()">Log Out</a>
+    </nav>
+  </header>
+  <main class="profile">
+    <div class="profile-header">
+      <img src="assets/img/user-avatar.png" alt="User Avatar">
+      <h2 id="username"></h2>
+    </div>
+    <div class="profile-posts" id="profile-posts">
+      <!-- User posts will be loaded here -->
+    </div>
+  </main>
+
+  <script>
+    function loadProfile() {
+      fetch('/api/user/profile', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('username').innerText = data.username;
+        const postsContainer = document.getElementById('profile-posts');
+        data.posts.forEach(post => {
+          const postElement = document.createElement('div');
+          postElement.className = 'post';
+          postElement.innerHTML = `
+            <img src="${post.image}" alt="Post Image">
+            <p>${post.caption}</p>
+          `;
+          postsContainer.appendChild(postElement);
+        });
+      });
+    }
+
+    function logOut() {
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProfile);
+  </script>
+</body>
+</html>
