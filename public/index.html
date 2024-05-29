@@ -53,8 +53,11 @@
         
         if (data.token) {
           localStorage.setItem('token', data.token);
+          
           const loggedInUser = document.getElementById('username').value;
           console.log(loggedInUser);
+          sessionStorage.setItem('loginusername',loggedInUser);
+
           window.location.href =  `feed.html?script1=true&fusername=${loggedInUser}`;
 
          

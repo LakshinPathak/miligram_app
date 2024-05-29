@@ -5,6 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/main.css">
   <title>Profile - MiliGram</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 10px 15px;
+      transition: color 0.3s;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #007bff;
+    }
+
+    .profile {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+
+    .profile-header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-right: 20px;
+      border: 2px solid #007bff;
+    }
+
+    .profile-header h2 {
+      margin: 0;
+      font-size: 28px;
+      color: #007bff;
+    }
+
+    .profile-posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .post {
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .post img {
+      width: 100%;
+      height: auto;
+    }
+
+    .post p {
+      margin: 10px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .post:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -16,7 +107,7 @@
   </header>
   <main class="profile">
     <div class="profile-header">
-      <img src="assets/img/user-avatar.png" alt="User Avatar">
+      <img src="#" alt="User Avatar" id="profile-avatar">
       <h2 id="username"></h2>
     </div>
     <div class="profile-posts" id="profile-posts">
@@ -25,16 +116,26 @@
   </main>
 
   <script>
-    function loadProfile() {
-      fetch('/api/user/profile', {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('username').innerText = data.username;
+    const username_profile = sessionStorage.getItem("loginusername");
+    console.log(username_profile);
+
+    async function loadProfile() {
+      try {
+        const response = await fetch(`/api/auth/${username_profile}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+
+        const data = await response.json();
+        console.log(data.profileImageUrl);
+        console.log(data);
+
+        document.getElementById('username').innerText = data.username || "Username";
+        document.getElementById('profile-avatar').src = data.profileImageUrl || 'assets/img/default-profile.png';
+
         const postsContainer = document.getElementById('profile-posts');
         data.posts.forEach(post => {
           const postElement = document.createElement('div');
@@ -45,7 +146,9 @@
           `;
           postsContainer.appendChild(postElement);
         });
-      });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     }
 
     function logOut() {
