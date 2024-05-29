@@ -62,6 +62,10 @@ app.get('/post.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'post.html'));
 });
 
+app.get('/setting.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'setting.html'));
+});
+
 app.listen(port, () => {
     connect();
     console.log(`Server is running on port ${port}`);

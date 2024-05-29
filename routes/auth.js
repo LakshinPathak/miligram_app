@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
@@ -30,7 +29,7 @@ const uploadImageToCloudinary = (file) => {
   });
 };
 
-// Sign Up
+// // Sign Up
 router.post('/signup', upload.single('profileImage'), async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -56,6 +55,14 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
 // Log In
 router.post('/login', async (req, res) => {
   try {
@@ -65,15 +72,19 @@ router.post('/login', async (req, res) => {
     // Check if user exists
     const user = await User.findOne({ username });
     console.log('User found:', user);
-    console.log(password+ "lakshin"+user.password);
-    if (!user) {
+    console.log(user.password);
+
+    if (!user ) {
       return res.status(400).json({ message: 'Invalid Username' });
     }
 
-
-    if (!(await bcrypt.compare(password, user.password))) {
-      return res.status(400).json({ message: 'Invalid password' });
-    }
+    if(password!=user.password)
+      {
+        return res.status(400).json({ message: 'Invalid password' });
+      }
+    // if (!(await bcrypt.compare(password, user.password))) {
+    //   return res.status(400).json({ message: 'Invalid password' });
+    // }
 
     // Sign JWT token
     const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
@@ -131,5 +142,44 @@ router.get('/:username_profile', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+
+// Update user settings
+router.post('/settings', async (req, res) => {
+  try {
+    const { username, newEmail, newPassword } = req.body;
+
+    console.log(username + newEmail + newPassword+"mishra");
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (newEmail) {
+      user.email = newEmail;
+      console.log(user.email);
+    }
+
+    if (newPassword) {
+      user.password = newPassword;
+      console.log(user.password);
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      username: user.username,
+      email: user.email,
+      profileImageUrl: user.profileImageUrl,
+      message: 'Settings updated successfully'
+    });
+
+  } catch (error) {
+    console.error('Error updating settings:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
 module.exports = router;
