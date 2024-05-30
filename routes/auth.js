@@ -34,7 +34,7 @@ const uploadImageToCloudinary = (file) => {
 // // Sign Up
 router.post('/signup', upload.single('profileImage'), async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, bio } = req.body;
     let profileImageUrl = '';
 
     if (req.file) {
@@ -47,7 +47,7 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
     }
 
     //const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password , profileImageUrl });
+    const newUser = new User({ username, email, password , profileImageUrl , bio: bio});
     await newUser.save();
 
     res.status(201).json({ message: 'User created successfully' });
@@ -179,6 +179,69 @@ router.post('/settings', async (req, res) => {
 
   } catch (error) {
     console.error('Error updating settings:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+// Update user bio
+router.post('/:username/bio', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { bio } = req.body;
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.bio = bio;
+    await user.save();
+
+    res.status(200).json({ message: 'Bio updated successfully' });
+  } catch (error) {
+    console.error('Error updating bio:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+// Middleware to verify JWT
+const verifyToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) {
+    return res.status(403).send({ message: 'No token provided' });
+  }
+  jwt.verify(token.split(' ')[1], 'secret', (err, decoded) => {
+    if (err) {
+      return res.status(500).send({ message: 'Failed to authenticate token' });
+    }
+    req.userId = decoded.id;
+    next();
+  });
+};
+
+
+// fetch user bio
+router.get('/:username/fetch_bio',verifyToken, async (req, res) => {
+  try {
+    const { username } = req.params;
+    // console.log(username+"nirma123");
+     console.log("nirma234");
+     const user = await User.findOne({ username });
+    console.log(user.username+"nirma234"); 
+    const username1 = user.bio
+     console.log(username1);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({k: username1});
+  } catch (error) {
+    console.error('Error fetching bio:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
