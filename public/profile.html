@@ -102,12 +102,19 @@
     <nav>
       <a href="#" onclick="feed()">Feed</a>
       <a href="create-post.html">Create Post</a>
-      
+      <a href="bio.html">Edit Bio</a>
       <a href="setting.html">Settings</a>
       <a href="#" onclick="logOut()">Log Out</a>
     </nav>
   </header>
   <main class="profile">
+
+
+    <div>
+      <h2 id="username"></h2>
+      <p class="bio" id="bio-text"></p>
+    </div>
+
     <div class="profile-header">
       <img src="#" alt="User Avatar" id="profile-avatar">
       <h2 id="username"></h2>
@@ -172,6 +179,7 @@
         console.error('Error fetching user data:', error);
       }
       load_Profile_post()
+      
     }
 
 
@@ -207,8 +215,36 @@
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
-
+      loadBio()
     }
+
+
+
+
+
+    async function loadBio() {
+
+      try {
+        const response1 = await fetch(`/api/auth/${username_profile}/fetch_bio`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+
+        const data = await response1.json();
+        
+        console.log(data.k+"mishra");
+        
+        document.getElementById('bio-text').innerHTML = `Bio: ${data.k}`;
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
+
+
+
 
     function logOut() {
       localStorage.removeItem('token');

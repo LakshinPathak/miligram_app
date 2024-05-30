@@ -16,6 +16,7 @@
                     <input type="email" class="c-panel__input" id="email" placeholder="Email">
                     <input type="password" class="c-panel__input" id="password" placeholder="Password">
                     <input type="file" class="c-panel__input" id="profileImage" accept="image/*">
+                    <input type="text" class="c-panel__input" id="bio" placeholder="Bio">
                     <a href="#" class="c-btn" onclick="signup()">Sign Up</a>
                 </div>
             </div>
@@ -28,12 +29,14 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const profileImage = document.getElementById('profileImage').files[0];
+            const bio = document.getElementById('bio').value;
 
             const formData = new FormData();
             formData.append('username', username);
             formData.append('email', email);
             formData.append('password', password);
             formData.append('profileImage', profileImage);
+            formData.append('bio', bio);
 
             try {
                 const response = await fetch('/api/auth/signup', {
