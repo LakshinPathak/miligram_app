@@ -42,7 +42,8 @@
       </div>
     </div>
   </div>
-
+<br>
+<br><br><br>
   <!-- Main content -->
   <main>
     <div class="container">
@@ -50,6 +51,11 @@
       <div class="col-9">
         <div class="statuses">
           <!-- Statuses will be dynamically loaded here -->
+        </div>
+        <br>
+        <!-- Posts section -->
+        <div class="posts">
+          <!-- Posts will be dynamically loaded here -->
         </div>
       </div>
 
@@ -67,9 +73,13 @@
     document.addEventListener('DOMContentLoaded', async function () {
       const urlParams = new URLSearchParams(window.location.search);
       const isScript1 = urlParams.get("script1") === "true";
+      const isScript2 = urlParams.get("script2") === "true";
+      const isScript3 = urlParams.get("script3") === "true";
+      const isScript4 = urlParams.get("script4") === "true";
+      
 
-      if (isScript1) {
-        const username = urlParams.get("fusername");
+      if (isScript1 || isScript2 || isScript3 || isScript4) {
+        const username = urlParams.get("fusername") ||  sessionStorage.getItem("loginusername");
         console.log(username)
         document.getElementById('username1').textContent = `${username}`;
 
@@ -95,9 +105,56 @@
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
+
+
+
+        
+       // Fetch posts and display them
+      //  try {
+      //   const postsResponse = await fetch('/api/posts/display_posts', {
+      //     method: 'GET',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': 'Bearer ' + localStorage.getItem('token')
+      //     }
+      //   });
+
+      //   const postsData = await postsResponse.json();
+      //   console.log(postsData);
+
+      //   const postsContainer = document.querySelector('.posts');
+
+
+      //   postsData.forEach(post => {
+      //     const postElement = document.createElement('div');
+      //     postElement.classList.add('post');
+      //     postElement.innerHTML = `
+      //       <img src="${post.image}" alt="Post Image" class="post-image" height="350px">
+      //       <p>${post.caption}</p>
+      //     `;
+      //     postsContainer.appendChild(postElement);
+      //   });
+      // } catch (error) {
+      //   console.error('Error fetching posts:', error);
+      // }
+
+      // <div class="post-header">
+      //         <img src="${post.user.profileImageUrl || 'default-profile.png'}" alt="Profile Image" class="post-profile-image">
+      //         <p>${post.user.username}</p>
+      //       </div>
+
+
+
+
+
+
+
       }
 
-      
+
+
+
+
 
      
 

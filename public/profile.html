@@ -100,7 +100,7 @@
 <body>
   <header>
     <nav>
-      <a href="feed.html">Feed</a>
+      <a href="#" onclick="feed()">Feed</a>
       <a href="create-post.html">Create Post</a>
       
       <a href="setting.html">Settings</a>
@@ -112,9 +112,38 @@
       <img src="#" alt="User Avatar" id="profile-avatar">
       <h2 id="username"></h2>
     </div>
-    <div class="profile-posts" id="profile-posts">
+    <!-- <div class="profile-posts" id="profile-posts"> -->
       <!-- User posts will be loaded here -->
+
+
+      <br>
+<br><br><br>
+  <!-- Main content -->
+  <main>
+    <div class="container">
+      <!-- Feed -->
+      <div class="col-9">
+        <div class="statuses">
+          <!-- Statuses will be dynamically loaded here -->
+        </div>
+        <br>
+        <!-- Posts section -->
+        <div class="posts">
+          <!-- Posts will be dynamically loaded here -->
+        </div>
+      </div>
+
+      <!-- Suggestions panel -->
+      <div class="col-3">
+        <h4>Suggestions For You</h4>
+        <div class="card">
+          <!-- Suggestions will be dynamically loaded here -->
+        </div>
+      </div>
     </div>
+  </main>
+
+    <!-- </div> -->
   </main>
 
   <script>
@@ -142,11 +171,53 @@
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
+      load_Profile_post()
+    }
+
+
+
+    async function load_Profile_post()
+
+{
+   //  // Fetch posts and display them
+     try {
+        const postsResponse = await fetch('/api/posts/display_posts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+
+        const postsData = await postsResponse.json();
+        console.log(postsData);
+
+        const postsContainer = document.querySelector('.posts');
+
+
+        postsData.forEach(post => {
+          const postElement = document.createElement('div');
+          postElement.classList.add('post');
+          postElement.innerHTML = `
+            <img src="${post.image}" alt="Post Image" class="post-image" height="350px">
+            <p>${post.caption}</p>
+          `;
+          postsContainer.appendChild(postElement);
+        });
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+
     }
 
     function logOut() {
       localStorage.removeItem('token');
       window.location.href = 'index.html';
+    }
+
+    function feed()
+    {
+      window.location.href=`feed.html?script3=true&fusername=${username_profile}`
     }
 
     document.addEventListener('DOMContentLoaded', loadProfile);
