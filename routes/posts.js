@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../models/User');
 const Post = require('../models/Post');
 
 
@@ -9,7 +10,7 @@ const Post = require('../models/Post');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
-const User = require('../models/User');
+
 const jwt = require('jsonwebtoken');
 
 // Configure Cloudinary
