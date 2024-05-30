@@ -1,8 +1,54 @@
 const express = require('express');
 const router = express.Router();
-//const User = require('../models/User');
-//const Post = require('../models/Post1');
- const Post = require('../models/Post');
+ //const Post = require('../models/Post');
+
+
+
+
+
+ const mongoose = require('mongoose');
+
+const Post = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User model
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  caption: {
+    type: String,
+    required: true
+  },
+  image: {
+    type: String,
+    required: true
+  },
+  likes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User' // Reference to the User model who liked the post
+  }],
+  comments: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User' // Reference to the User who commented
+    },
+    text: String,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+
+
 
 // Define your routes for posts here
 
