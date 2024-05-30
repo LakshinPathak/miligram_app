@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 // const bcrypt = require('bcrypt');
 
+// Define the UserSchema
 const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true , unique: true },
+  username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   bio: { type: String },
@@ -26,6 +27,52 @@ const UserSchema = new mongoose.Schema({
 //   return bcrypt.compare(candidatePassword, this.password);
 // };
 
+// Define the PostSchema
+const PostSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User model
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  caption: {
+    type: String,
+    required: true
+  },
+  image: {
+    type: String,
+    required: true
+  },
+  likes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User' // Reference to the User model who liked the post
+  }],
+  comments: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User' // Reference to the User who commented
+    },
+    text: String,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
+// Create models for both schemas
+const User = mongoose.model('User', UserSchema);
+const Post = mongoose.model('Post', PostSchema);
 
-module.exports = mongoose.model('User', UserSchema);
+// Export the models
+module.exports = {
+  User,
+  Post
+};
