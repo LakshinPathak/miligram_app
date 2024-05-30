@@ -1,52 +1,6 @@
 const express = require('express');
 const router = express.Router();
- //const Post = require('../models/Post');
-
-
-
-
-
- const mongoose = require('mongoose');
-
-const Post = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
-    required: true
-  },
-  username: {
-    type: String,
-    required: true
-  },
-  caption: {
-    type: String,
-    required: true
-  },
-  image: {
-    type: String,
-    required: true
-  },
-  likes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User' // Reference to the User model who liked the post
-  }],
-  comments: [{
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User' // Reference to the User who commented
-    },
-    text: String,
-    createdAt: {
-      type: Date,
-      default: Date.now
-    }
-  }],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
+const Post = require('../models/Post');
 
 
 
@@ -55,7 +9,6 @@ const Post = new mongoose.Schema({
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
-//const Post = require('../models/Post');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
