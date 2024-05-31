@@ -71,6 +71,14 @@ app.get('/bio.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'bio.html'));
 });
 
+app.get('/admin.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+app.get('/create_admin.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'create_admin.html'));
+});
+
 app.listen(port, () => {
     connect();
     console.log(`Server is running on port ${port}`);
