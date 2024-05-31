@@ -199,6 +199,14 @@
 
         const postsData = await postsResponse.json();
         console.log(postsData);
+        console.log("kajal")
+        console.log(postsData.length)
+
+        // for (let i = 0; i < postsData.length; i++) {
+
+        //   console.log(postsData[i]._id);
+        // }
+        
 
         const postsContainer = document.querySelector('.posts');
 
@@ -209,6 +217,7 @@
           postElement.innerHTML = `
             <img src="${post.image}" alt="Post Image" class="post-image" height="350px">
             <p>${post.caption}</p>
+            <button class="delete-btn" onclick="deletePost('${post._id}')">Delete</button>
           `;
           postsContainer.appendChild(postElement);
         });
@@ -219,6 +228,30 @@
     }
 
 
+
+    async function deletePost(postId) {
+      try {
+        const response = await fetch(`/api/posts/delete_post/${postId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+
+        if (response.ok) {
+          alert('Post deleted successfully');
+          window.location.reload(true);
+         // document.getElementById('profile-posts').innerHTML = '';
+          loadProfilePosts();
+        } else {
+          alert('Failed to delete post');
+        }
+      } catch (error) {
+        console.error('Error deleting post1:', error);
+        // alert('Error deleting post');
+      }
+    }
 
 
 
