@@ -295,6 +295,7 @@ const verifyAdmin = async (req, res, next) => {
 router.get('/:username/fetch_users', verifyToken, verifyAdmin, async (req, res) => {
   try {
     const { username } = req.params;
+    console.log(username+"pathak1234");
     const users = await User.find({});
     console.log("hiii hello how are you"+ users)
 
@@ -312,7 +313,7 @@ router.put('/:username/update_user', verifyToken, verifyAdmin, async (req, res) 
   try {
     // const { username1 } = req.params;
     const { email, password, username } = req.body;
-    console.log(email+ password+"newww")
+    
     const user = await User.findOne({username: username })
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
