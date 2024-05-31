@@ -125,20 +125,26 @@
 
 
 const urlParams = new URLSearchParams(window.location.search);
-      const isScript5 = urlParams.get("script5") === "true";
+     // const isScript5 = urlParams.get("script5") === "true";
       const isScript6= urlParams.get("script6") === "true";
       const username = urlParams.get("admin_name");
-      if  (isScript5 || isScript6) {
+      if  ( isScript6) {
         const username = urlParams.get("admin_name");
-        console.log(username)
+        console.log(username+"heloooo");
         document.getElementById('username1').innerHTML = `Hello: ${username}`;
 
       }
 
+
+
     async function fetchUsers() {
+
+      
       try {
         const response = await fetch(`/api/auth/${username}/fetch_users`, {
+          method: 'GET',
           headers: {
+            'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         });
@@ -149,6 +155,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
         const users = await response.json();
         console.log(users);
+       console.log("kk"); 
         const usersTable = document.getElementById('users-table').querySelector('tbody');
         usersTable.innerHTML = '';
 
@@ -161,7 +168,6 @@ const urlParams = new URLSearchParams(window.location.search);
             <td>
               <button class="btn btn-update" onclick="updateUser('${user.username}', this)">Update</button>
               <button class="btn btn-delete" onclick="deleteUser('${user.username}', this)">Delete</button>
-            </td>
             </td>
           `;
           usersTable.appendChild(row);

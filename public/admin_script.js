@@ -22,7 +22,8 @@ body: JSON.stringify({ username,email, password }),
         const data = await response.json();
         if (response.ok) {
             console.log('Admin user created successfully:', data.message);
-              window.location.href = `admin.html?script5=true&admin_name=${username}`;
+            window.location.href = `index.html`;
+            //   window.location.href = `admin.html?script5=true&admin_name=${username}`;
         } else {
             console.error('Error creating admin user:', data.message);
         }
