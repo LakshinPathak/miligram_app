@@ -94,7 +94,6 @@ router.post('/create_post', verifyToken, upload.single('image'), async (req, res
 
 
 
-
 // Fetch posts for the logged-in user
 router.get('/display_posts', verifyToken, async (req, res) => {
   try {
@@ -107,5 +106,31 @@ router.get('/display_posts', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+
+
+// Delete a post by ID
+router.delete('/delete_post/:postId', verifyToken, async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    if (post.user.toString() !== req.userId) {
+      return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    await Post.findByIdAndDelete(postId);
+    res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
 
 module.exports = router;
