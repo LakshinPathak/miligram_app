@@ -47,7 +47,7 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
     }
 
     //const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password , profileImageUrl , bio: bio});
+    const newUser = new User({ username, email, password , profileImageUrl , bio: bio, isAdmin:false});
     await newUser.save();
 
     res.status(201).json({ message: 'User created successfully' });
@@ -73,12 +73,14 @@ router.post('/login', async (req, res) => {
 
     // Check if user exists
     const user = await User.findOne({ username });
-    console.log('User found:', user);
-    console.log(user.password);
-
+    
     if (!user ) {
       return res.status(400).json({ message: 'Invalid Username' });
     }
+
+    console.log('User found:', user);
+
+    
 
     if(password!=user.password)
       {
@@ -92,7 +94,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
     console.log('Token generated:', token);
 
-    res.status(200).json({ token, username: user.username });
+    res.status(200).json({ token, username: user.username, isAdmin: user.isAdmin });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -246,5 +248,112 @@ router.get('/:username/fetch_bio',verifyToken, async (req, res) => {
   }
 });
 
+
+// Middleware to check security key
+const checkSecurityKey = (req, res, next) => {
+  const securityKey = req.headers['authorization'];
+  const expectedKey = 'pathak'; // Replace this with your actual security key
+
+  if (securityKey === expectedKey) {
+      next();
+  } else {
+      return res.status(403).json({ message: 'Forbidden: Invalid security key' });
+  }
+};
+
+// Create Admin
+router.post('/createadmin', checkSecurityKey, async (req, res) => {
+  try {
+      const { username, email, password } = req.body;
+
+      const userExists = await User.findOne({ username });
+      if (userExists) {
+          return res.status(400).json({ message: 'User with this username already exists' });
+      }
+
+      const newUser = new User({ username, email, password, isAdmin: true });  
+      await newUser.save();
+
+      res.status(201).json({ message: 'Admin user created successfully' });
+  } catch (error) {
+      console.error('Create Admin error:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// Middleware to check if the user is an admin
+const verifyAdmin = async (req, res, next) => {
+  const user = await User.findById(req.userId);
+  if (!user || !user.isAdmin) {
+    return res.status(403).send({ message: 'Access forbidden: Admins only' });
+  }
+  next();
+};
+
+
+// Fetch all users
+router.get('/:username/fetch_users', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const { username } = req.params;
+    const users = await User.find({});
+    console.log("hiii hello how are you"+ users)
+
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+// Update user details
+router.put('/:username/update_user', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    // const { username1 } = req.params;
+    const { email, password, username } = req.body;
+    console.log(email+ password+"newww")
+    const user = await User.findOne({username: username })
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (email) user.email = email;
+    if (password) user.password = password;
+
+    await user.save();
+
+    res.status(200).json({ message: 'User updated successfully', user });
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+// Delete a user
+router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const { username } = req.params;
+    
+    const user = await User.findOne({username:username });
+
+    const posts= await Post.find({username:username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    await User.deleteOne({ username });
+    await Post.deleteMany({username});
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 module.exports = router;
