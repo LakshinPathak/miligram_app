@@ -23,7 +23,13 @@
       </div>
       <div class="c-signup group">
         <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+        
       </div>
+      <div class="c-signup group">
+        <p> Create Admin <a href="create_admin.html">Click here</a></p>
+      </div>
+      
+
       <div class="c-app">
         <p>Get the app.</p>
         <div class="c-app__download">
@@ -57,9 +63,14 @@
           const loggedInUser = document.getElementById('username').value;
           console.log(loggedInUser);
           sessionStorage.setItem('loginusername',loggedInUser);
-
-          window.location.href =  `feed.html?script1=true&fusername=${loggedInUser}`;
-
+          if (data.isAdmin) {
+                // Redirect to the Admin dashboard
+               window.location.href = `/admin.html?script6=true&admin_name=${username}`
+             } 
+             else
+             {
+              window.location.href =  `feed.html?script1=true&fusername=${loggedInUser}`;
+             }
          
         } else {
           alert(data.message);
