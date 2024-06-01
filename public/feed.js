@@ -121,28 +121,6 @@ try {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
   async function followUser(username, button) {
     try {
         const response = await fetch(`/api/profile/follow/${username}`, {
@@ -157,7 +135,9 @@ try {
         if (response.ok) {
             button.textContent = 'Unfollow';
             button.classList.add('unfollow');
-            localStorage.setItem(`${username}-followed`, 'true'); // Store follow status in local storage
+           // localStorage.setItem(`${username}-followed`, 'true'); // Store follow status in local storage
+            localStorage.setItem(`${currentUserUsername}-${username}-followed`, 'true');
+
             window.location.reload(true);
           //  loadUserPosts(username);
         } else {
@@ -173,8 +153,9 @@ try {
 const followButtons = document.querySelectorAll('.follow-btn');
 followButtons.forEach(button => {
     const username = button.dataset.username;
-    const isFollowed = localStorage.getItem(`${username}-followed`);
+    const isFollowed = localStorage.getItem(`${currentUserUsername}-${username}-followed`);
     if (isFollowed === 'true') {
+      console.log("hiiii")
         button.textContent = 'Unfollow';
         button.classList.add('unfollow');
     }
@@ -195,7 +176,7 @@ async function unfollowUser(username, button) {
     if (response.ok) {
       button.textContent = 'Follow';
       button.classList.remove('unfollow');
-      localStorage.removeItem(`${username}-followed`); // Remove the follow status from local storage
+      localStorage.removeItem(`${currentUserUsername}-${username}-followed`); // Remove the follow status from local storage
      // removeUserPosts(username);
       window.location.reload(true);
      // removeUserPosts(username);
@@ -224,6 +205,9 @@ async function loadUserPosts(username) {
       const postsData = await response.json();
       const feedPostsContainer = document.getElementById('feed-posts');
 
+
+      console.log(postsData);
+      console.log("lakshit1234");
       // Clear previous posts
      // feedPostsContainer.innerHTML = '';
 
@@ -292,31 +276,9 @@ async function loadUserPosts(username) {
 
 
   async function postComment(postId, comment, commentsSection) {
-  //   try {
-  //     const response = await fetch(`/api/posts/${postId}/comment`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer ' + localStorage.getItem('token')
-  //       },
-  //       body: JSON.stringify({ comment })
-  //     });
-
-  //     if (response.ok) {
-  //       const commentElement = document.createElement('p');
-  //       commentElement.textContent = comment;
-  //       commentsSection.appendChild(commentElement);
-  //     } else {
-  //       console.error('Error posting comment:', response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error posting comment:', error);
-  //   }
+  
   }
 
   function removeUserPosts(username) {
-  //   const feedPostsContainer = document.getElementById('feed-posts');
-  //   const posts = feedPostsContainer.querySelectorAll(`[data-username="${username}"]`);
-  //   posts.forEach(post => post.remove());
   }
 });
