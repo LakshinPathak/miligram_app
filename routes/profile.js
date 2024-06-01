@@ -64,6 +64,17 @@ router.post('/follow/:username', async (req, res) => {
     relationship.following.push(username);
     await relationship.save();
 
+
+
+    let relationship2 = await Relationship.findOne({ username: username });
+
+     // If the relationship2 record doesn't exist, create a new one
+     if (!relationship2) {
+      relationship2 = new Relationship({ username: username, followers: [] });
+    }
+
+    relationship2.followers.push(currentUserUsername);
+    await relationship2.save();
     // Send the response
     res.status(200).json({ message: 'User followed successfully' });
   } catch (error) {
@@ -71,6 +82,92 @@ router.post('/follow/:username', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+
+
+
+// Route 
+// router.post('/fetch2/:username', async (req, res) => {
+//   const { username } = req.params;
+//   const { currentUserUsername } = req.body; 
+
+//   try{
+//     //  // Find the user being followed and the current user
+//     //  const userToFollow = await Master.findOne({ username });
+//     //  const currentUser = await Master.findOne({ username: currentUserUsername });
+
+
+
+//     //  let relationship = await Relationship.findOne({ username: currentUserUsername });
+
+//     //  if (!relationship) {
+     
+//     // }
+
+
+//      // Find the relationship record for the current user
+//      const currentUserRelationship = await Relationship.findOne({ username: currentUserUsername });
+
+//      if (!currentUserRelationship) {
+//        return res.status(404).json({ message: 'No relationship record found for the current user' });
+//      }
+ 
+//      // Check if the user with the given username is being followed by the current user
+//      const isFollowing = currentUserRelationship.following.includes(username);
+//      console.log(isFollowing);
+//      console.log(currentUserUsername+ "mishra2810"+ username);
+//      // Return the result
+//      res.status(200).json({ isFollowing });
+     
+//   }
+//   catch (error) {
+//     console.error('Error fetching!!!1', error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+
+
+// });
+
+
+
+
+router.post('/fetch2/:username', async (req, res) => {
+  const { username } = req.params;
+  const { currentUserUsername } = req.body; 
+
+  try {
+    // Find the relationship record for the current user
+    const currentUserRelationship = await Relationship.findOne({ username: currentUserUsername });
+
+    if (!currentUserRelationship) {
+      return res.status(404).json({ message: 'No relationship record found for the current user' });
+    }
+
+    // Check if the user with the given username is being followed by the current user
+    const isFollowing = currentUserRelationship.following.includes(username);
+
+    // Return more information about the relationship status
+    const result = {
+      isFollowing,
+      username: currentUserUsername,
+      targetUser: username,
+      // Add more information if needed
+    };
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Error fetching!!!1', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+
 
 
 // Route to unfollow a user
