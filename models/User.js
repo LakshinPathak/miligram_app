@@ -68,12 +68,27 @@ const PostSchema = new mongoose.Schema({
   }
 });
 
+
+
+
+const MasterSchema = new mongoose.Schema({
+
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  profileImageUrl: { type: String }
+});
+
 // Create models for both schemas
 const User = mongoose.model('User', UserSchema);
 const Post = mongoose.model('Post', PostSchema);
+const Master = mongoose.model('Master', MasterSchema);
 
 // Export the models
 module.exports = {
   User,
-  Post
+  Post,
+  Master
 };
