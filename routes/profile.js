@@ -110,14 +110,18 @@ router.get('/:username/fetch_post_feed', async (req, res) => {
 
     // Find the current user in the Master table
     const currentUserRelationship = await Master.findOne({ username });
-    if (!currentUserRelationship) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+
+
+    
+    // if (!currentUserRelationship) {
+    //   return res.status(404).json({ message: 'User not found' });
+    // }
     
 
     // Fetch posts of users that the current user is following
     const posts = await Post.find({ username });
     console.log(posts);
+    console.log("hey there");
     res.status(200).json(posts);
   } catch (error) {
     console.error('Error fetching posts:', error);
