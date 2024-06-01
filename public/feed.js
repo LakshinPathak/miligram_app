@@ -137,6 +137,7 @@ try {
             button.classList.add('unfollow');
            // localStorage.setItem(`${username}-followed`, 'true'); // Store follow status in local storage
            sessionStorage.setItem(`${currentUserUsername}-${username}-followed`, 'true');
+          // document.cookie = `${currentUserUsername}-${username}-followed=true; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/;`;
 
             window.location.reload(true);
           //  loadUserPosts(username);
@@ -149,16 +150,73 @@ try {
    
 }
 
+
+
+
+
+async function func(username,currentUserUsername)
+{
+
+  try {
+    const response = await fetch(`/api/profile/fetch2/${username}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({ currentUserUsername })
+    });
+
+    if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    
+  return data.isFollowing   
+   
+    } else {
+      console.error('Error unfollowing user:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error unfollowing user:', error);
+  }
+}
+
 // Check if the user is already followed and update button text accordingly
 const followButtons = document.querySelectorAll('.follow-btn');
 followButtons.forEach(button => {
     const username = button.dataset.username;
     const isFollowed = sessionStorage.getItem(`${currentUserUsername}-${username}-followed`);
-    if (isFollowed === 'true') {
-      console.log("hiiii")
-        button.textContent = 'Unfollow';
-        button.classList.add('unfollow');
-    }
+    
+
+
+
+// const isFollowing=  func(username,currentUserUsername);
+// console.log(isFollowing)
+
+//     if (isFollowing === 'true') {
+//       console.log("hiiii");
+//         button.textContent = 'Unfollow';
+//         button.classList.add('unfollow');
+//     }
+
+
+
+(async () => {
+  try {
+      const isFollowing = await func(username, currentUserUsername);
+      console.log(isFollowing);
+      if (isFollowing === true) {
+          console.log("hiiii");
+          button.textContent = 'Unfollow';
+          button.classList.add('unfollow');
+      }
+  } catch (error) {
+      console.error('Error:', error);
+  }
+})();
+
+
+
 });
 
 async function unfollowUser(username, button) {
@@ -178,6 +236,8 @@ async function unfollowUser(username, button) {
       button.classList.remove('unfollow');
       sessionStorage.removeItem(`${currentUserUsername}-${username}-followed`); // Remove the follow status from local storage
      // removeUserPosts(username);
+    // document.cookie = `${currentUserUsername}-${username}-followed=true; expires=Thu, 01 Jan 2099 00:00:00 UTC; path=/;`;
+
       window.location.reload(true);
      // removeUserPosts(username);
     } else {
@@ -206,8 +266,8 @@ async function loadUserPosts(username) {
       const feedPostsContainer = document.getElementById('feed-posts');
 
 
-      console.log(postsData);
-      console.log("lakshit1234");
+      //console.log(postsData);
+      //console.log("lakshit1234");
       // Clear previous posts
      // feedPostsContainer.innerHTML = '';
 
