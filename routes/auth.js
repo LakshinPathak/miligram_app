@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, Post } = require('../models/User');
+const { User, Post, Master } = require('../models/User');
 // const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
@@ -49,6 +49,10 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
     //const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password , profileImageUrl , bio: bio, isAdmin:false});
     await newUser.save();
+
+
+    const newUser_Master = new Master({ username: username, profileImageUrl: profileImageUrl});
+    await newUser_Master.save();
 
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
@@ -343,12 +347,16 @@ router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, re
 
     const posts= await Post.find({username:username });
 
+    const master = await Master.find({username:username });
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     await User.deleteOne({ username });
     await Post.deleteMany({username});
+    await Master.deleteOne({ username });
+    
 
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {

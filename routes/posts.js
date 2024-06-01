@@ -2,17 +2,7 @@ const express = require('express');
 const router = express.Router();
 // const User = require('../models/User');
 // const Post = require('../models/Post');
-const { User, Post } = require('../models/User');
-
-
-
-
-
-
-
-
-
-
+const { User, Post , Master} = require('../models/User');
 
 
 // Define your routes for posts here
@@ -130,6 +120,52 @@ router.delete('/delete_post/:postId', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+
+
+
+// Add comment to a post
+router.post('/add_comment/:postId', verifyToken, async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { comment } = req.body;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    post.comments.push({ text: comment, user: req.userId });
+    await post.save();
+
+    res.status(201).json({ message: 'Comment added successfully', comment });
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// Get comments for a post
+router.get('/get_comments/:postId', verifyToken, async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const comments = post.comments;
+    res.status(200).json(comments);
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
 
 
 
