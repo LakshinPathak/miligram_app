@@ -6,95 +6,197 @@
   <link rel="stylesheet" href="assets/css/main.css">
   <title>Profile - MiliGram</title>
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      background-color: #f0f2f5;
-      color: #333;
-    }
+   body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  background-color: #f0f2f5;
+  color: #333;
+}
 
-    header {
-      background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.comment-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
 
-    nav a {
-      text-decoration: none;
-      color: #333;
-      padding: 10px 15px;
-      transition: color 0.3s;
-      font-weight: bold;
-    }
+.comment-btn:hover {
+  background-color: #0056b3;
+}
 
-    nav a:hover {
-      color: #007bff;
-    }
+nav a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px 15px;
+  transition: color 0.3s;
+  font-weight: bold;
+}
 
-    .profile {
-      max-width: 800px;
-      margin: 40px auto;
-      background-color: #ffffff;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-radius: 10px;
-    }
+nav a:hover {
+  color: #007bff;
+}
+.comment {
+  margin-top: 10px; /* Adjust as needed */
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
 
-    .profile-header {
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid #e0e0e0;
-      padding-bottom: 20px;
-      margin-bottom: 20px;
-    }
+.comment p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
 
-    .profile-header img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin-right: 20px;
-      border: 2px solid #007bff;
-    }
 
-    .profile-header h2 {
-      margin: 0;
-      font-size: 28px;
-      color: #007bff;
-    }
+.profile {
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
 
-    .profile-posts {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-    }
+.profile-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
 
-    .post {
-      background-color: #ffffff;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+.profile-header img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 20px;
+  border: 2px solid #007bff;
+}
 
-    .post img {
-      width: 100%;
-      height: auto;
-    }
+.profile-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #007bff;
+}
 
-    .post p {
-      margin: 10px;
-      font-size: 16px;
-      color: #555;
-    }
+.profile-bio {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    .post:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
+.profile-bio p {
+  font-size: 18px;
+  color: #555;
+}
+
+.profile-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.hide-comment-btn {
+  background-color: #dc3545; /* Red color for button */
+  color: #fff; /* White text color */
+  border: none; /* No border */
+  padding: 10px 20px; /* Padding for button */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Cursor style on hover */
+  margin-top: 10px; /* Margin top to separate from other elements */
+  transition: background-color 0.3s; /* Smooth transition effect for background color */
+}
+
+.hide-comment-btn:hover {
+  background-color: #c82333; /* Darker red color on hover */
+}
+
+.post {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.post img {
+  width: 100%;
+  height: auto;
+}
+
+.post p {
+  margin: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+.post:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #cc0000;
+}
+
+.suggestions {
+  margin-top: 20px;
+}
+
+.suggestions h4 {
+  color: #007bff;
+}
+
+.suggestions .card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.show-comment-btn {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.show-comment-btn:hover {
+  background-color: #218838;
+}
+
+
   </style>
 </head>
 <body>
@@ -138,6 +240,9 @@
         <div class="posts">
           <!-- Posts will be dynamically loaded here -->
         </div>
+     
+
+
       </div>
 
       <!-- Suggestions panel -->
@@ -199,7 +304,7 @@
 
         const postsData = await postsResponse.json();
         console.log(postsData);
-        console.log("kajal")
+       // console.log("kajal")
         console.log(postsData.length)
 
         // for (let i = 0; i < postsData.length; i++) {
@@ -218,7 +323,13 @@
             <img src="${post.image}" alt="Post Image" class="post-image" height="350px">
             <p>${post.caption}</p>
             <button class="delete-btn" onclick="deletePost('${post._id}')">Delete</button>
+            <button class="comment-btn" onclick="addComment('${post._id}')">Add Comment</button>
+            <button class="hide-comment-btn" onclick="hideComments('${post._id}')">Hide Comments</button>
+            <button class="show-comment-btn" onclick="loadComments('${post._id}')">Show Comments</button>
+            <div class="comment" id="comment-${post._id}"></div>
           `;
+
+        //  loadComments(post._id)
           postsContainer.appendChild(postElement);
         });
       } catch (error) {
@@ -268,7 +379,7 @@
 
         const data = await response1.json();
         
-        console.log(data.k+"mishra");
+       // console.log(data.k+"mishra");
         
         document.getElementById('bio-text').innerHTML = `Bio: ${data.k}`;
       } catch (error) {
@@ -288,6 +399,75 @@
     {
       window.location.href=`feed.html?script3=true&fusername=${username_profile}`
     }
+
+
+
+
+
+
+    async function addComment(postId) {
+    try {
+      const comment = prompt('Enter your comment:');
+      if (!comment) return;
+
+      const response = await fetch(`/api/posts/add_comment/${postId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ comment })
+      });
+
+      if (response.ok) {
+        alert('Comment added successfully');
+        loadComments(postId);
+      } else {
+        alert('Failed to add comment');
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      alert('Error adding comment');
+    }
+  }
+
+  async function loadComments(postId) {
+    try {
+        const response = await fetch(`/api/posts/get_comments/${postId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+
+        if (response.ok) {
+            const comments = await response.json();
+            const commentDiv = document.querySelector(`#comment-${postId}`);
+            commentDiv.innerHTML = '';  // Clear previous comments
+
+            comments.forEach(comment => {
+                const commentElement = document.createElement('p');
+                commentElement.textContent = comment.text;
+                commentDiv.appendChild(commentElement);
+            });
+        } else {
+            alert('Failed to load comments');
+        }
+    } catch (error) {
+        console.error('Error loading comments:', error);
+        alert('No comments!!!!');
+    }
+}
+
+
+  function hideComments(postId) {
+    const commentDiv = document.querySelector(`#comment-${postId}`);
+    commentDiv.innerHTML = ''; // Clear existing comments for the specific post
+}
+
+
+
 
     document.addEventListener('DOMContentLoaded', loadProfile);
   </script>

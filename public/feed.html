@@ -5,6 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .suggestions .card img {
+  width: 40px; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+  border-radius: 50%;
+  margin-right: 10px;
+}
+  </style>
   <title>Feed</title>
 </head>
 
@@ -36,14 +44,14 @@
       <div class="username">
         <p>Welcome, <span id="username1"></span></p>
       </div>
-
       <div class="logout">
         <a href="/index.html">Logout</a>
       </div>
     </div>
   </div>
-<br>
-<br><br><br>
+
+  <br>
+  <br><br><br>
   <!-- Main content -->
   <main>
     <div class="container">
@@ -62,7 +70,7 @@
       <!-- Suggestions panel -->
       <div class="col-3">
         <h4>Suggestions For You</h4>
-        <div class="card">
+        <div class="suggestions" id="suggestions">
           <!-- Suggestions will be dynamically loaded here -->
         </div>
       </div>
@@ -76,10 +84,10 @@
       const isScript2 = urlParams.get("script2") === "true";
       const isScript3 = urlParams.get("script3") === "true";
       const isScript4 = urlParams.get("script4") === "true";
-      
-
+      const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
+     
       if (isScript1 || isScript2 || isScript3 || isScript4) {
-        const username = urlParams.get("fusername") ||  sessionStorage.getItem("loginusername");
+        const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
         console.log(username)
         document.getElementById('username1').textContent = `${username}`;
 
@@ -95,76 +103,68 @@
           const data = await response.json();
           console.log(data.profileImageUrl);
 
-
           if (data.profileImageUrl) {
             document.getElementById('profileImage').src = data.profileImageUrl;
-            console.log("lakshinnnnn")
           } else {
-            document.getElementById('profileImage').src = 'default-profile.png'; // Use a default image if no profile image is found
+            document.getElementById('profileImage').src = 'assets/img/default-profile.png'; // Use a default image if no profile image is found
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
 
+        // Fetch suggestions
+        try {
+          const suggestionsResponse = await fetch('/api/profile/master', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+          });
+
+          const suggestionsData = await suggestionsResponse.json();
+          const suggestionsContainer = document.getElementById('suggestions');
+
+          suggestionsData.forEach(suggestion => {
 
 
-        
-       // Fetch posts and display them
-      //  try {
-      //   const postsResponse = await fetch('/api/posts/display_posts', {
-      //     method: 'GET',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'Authorization': 'Bearer ' + localStorage.getItem('token')
-      //     }
-      //   });
+            if (suggestion.username !== username) {
 
-      //   const postsData = await postsResponse.json();
-      //   console.log(postsData);
+            const suggestionCard = document.createElement('div');
+            suggestionCard.className = 'card';
 
-      //   const postsContainer = document.querySelector('.posts');
+            const profileImage = document.createElement('img');
+            profileImage.src = suggestion.profileImageUrl || 'assets/img/default-profile.png';
+            profileImage.alt = suggestion.username;
 
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'info';
 
-      //   postsData.forEach(post => {
-      //     const postElement = document.createElement('div');
-      //     postElement.classList.add('post');
-      //     postElement.innerHTML = `
-      //       <img src="${post.image}" alt="Post Image" class="post-image" height="350px">
-      //       <p>${post.caption}</p>
-      //     `;
-      //     postsContainer.appendChild(postElement);
-      //   });
-      // } catch (error) {
-      //   console.error('Error fetching posts:', error);
-      // }
+            const usernameDiv = document.createElement('div');
+            usernameDiv.className = 'name';
+            usernameDiv.textContent = suggestion.username;
 
-      // <div class="post-header">
-      //         <img src="${post.user.profileImageUrl || 'default-profile.png'}" alt="Profile Image" class="post-profile-image">
-      //         <p>${post.user.username}</p>
-      //       </div>
+            const followButton = document.createElement('button');
+            followButton.className = 'follow-btn';
+            followButton.textContent = 'Follow';
 
-
-
-
-
-
-
+            infoDiv.appendChild(usernameDiv);
+            infoDiv.appendChild(followButton);
+            suggestionCard.appendChild(profileImage);
+            suggestionCard.appendChild(infoDiv);
+            suggestionsContainer.appendChild(suggestionCard);
+            }
+          });
+        } catch (error) {
+          console.error('Error fetching suggestions:', error);
+        }
       }
-
-
-
-
-
-
-     
 
       function logOut() {
         localStorage.removeItem('token');
         window.location.href = 'index.html';
       }
-
     });
-
   </script>
 </body>
 
