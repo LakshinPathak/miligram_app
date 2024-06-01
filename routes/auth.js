@@ -349,6 +349,20 @@ router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, re
 
     const master = await Master.find({username:username });
 
+     const relation = await Relationship.find({username:username });
+
+     // Remove the user from Relationship records where they are being followed
+     await Relationship.updateMany(
+      { following: username },
+      { $pull: { following: username } }
+    );
+
+      // Remove the user from Relationship records where they are being following
+      await Relationship.updateMany(
+        { followers: username },
+        { $pull: { followers: username } }
+      );
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -356,7 +370,9 @@ router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, re
     await User.deleteOne({ username });
     await Post.deleteMany({username});
     await Master.deleteOne({ username });
-    
+   await Relationship.deleteOne({ username });
+
+console.log('Sucesss!!');
 
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
