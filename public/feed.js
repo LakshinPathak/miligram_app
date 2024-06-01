@@ -136,7 +136,7 @@ try {
             button.textContent = 'Unfollow';
             button.classList.add('unfollow');
            // localStorage.setItem(`${username}-followed`, 'true'); // Store follow status in local storage
-            localStorage.setItem(`${currentUserUsername}-${username}-followed`, 'true');
+           sessionStorage.setItem(`${currentUserUsername}-${username}-followed`, 'true');
 
             window.location.reload(true);
           //  loadUserPosts(username);
@@ -153,7 +153,7 @@ try {
 const followButtons = document.querySelectorAll('.follow-btn');
 followButtons.forEach(button => {
     const username = button.dataset.username;
-    const isFollowed = localStorage.getItem(`${currentUserUsername}-${username}-followed`);
+    const isFollowed = sessionStorage.getItem(`${currentUserUsername}-${username}-followed`);
     if (isFollowed === 'true') {
       console.log("hiiii")
         button.textContent = 'Unfollow';
@@ -176,7 +176,7 @@ async function unfollowUser(username, button) {
     if (response.ok) {
       button.textContent = 'Follow';
       button.classList.remove('unfollow');
-      localStorage.removeItem(`${currentUserUsername}-${username}-followed`); // Remove the follow status from local storage
+      sessionStorage.removeItem(`${currentUserUsername}-${username}-followed`); // Remove the follow status from local storage
      // removeUserPosts(username);
       window.location.reload(true);
      // removeUserPosts(username);
