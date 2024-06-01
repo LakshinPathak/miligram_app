@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 // const User = require('../models/User');
 // const Post = require('../models/Post');
-const { User, Post , Master} = require('../models/User');
+const { User, Post , Master, Relationship} = require('../models/User');
 
 
 // Define your routes for posts here

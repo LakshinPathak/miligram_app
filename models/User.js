@@ -81,14 +81,35 @@ const MasterSchema = new mongoose.Schema({
   profileImageUrl: { type: String }
 });
 
+
+// Define the RelationshipSchema
+const RelationshipSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true
+  },
+  following: {
+    type: [String], // Array of strings
+    default: [] // Default value as empty array
+  },
+  followers: {
+    type: [String], // Array of strings
+    default: [] // Default value as empty array
+  }
+});
+
+
 // Create models for both schemas
 const User = mongoose.model('User', UserSchema);
 const Post = mongoose.model('Post', PostSchema);
 const Master = mongoose.model('Master', MasterSchema);
+const Relationship = mongoose.model('Relationship', RelationshipSchema);
+
 
 // Export the models
 module.exports = {
   User,
   Post,
-  Master
+  Master,
+  Relationship
 };
