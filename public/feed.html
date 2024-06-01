@@ -4,14 +4,232 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     .suggestions .card img {
-  width: 40px; /* Adjust the width as needed */
-  height: 40px; /* Adjust the height as needed */
-  border-radius: 50%;
-  margin-right: 10px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+    }
+
+    .navbar {
+      background-color: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .logo img {
+      height: 30px;
+    }
+
+    .searchbar input {
+      padding: 5px 10px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+    }
+
+    .nav-links ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .action {
+      display: flex;
+      align-items: center;
+    }
+
+    .profile_img img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .username p {
+      margin: 0;
+    }
+
+    .logout a {
+      color: #ff0000;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    .suggestions h4 {
+  margin-bottom: 10px; /* Add some space below the heading */
 }
+    .suggestions  {
+  position: fixed;
+  top: 120px; /* Adjust the top position as needed */
+  right: 20px; /* Adjust the right position as needed */
+}
+    .suggestions .card {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      width: 200px;
+    }
+
+    .suggestions .card .info {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-grow: 1;
+      margin-right: 20px;
+    }
+
+    .suggestions .card .name {
+      font-weight: bold;
+    }
+
+    .suggestions .card .follow-btn {
+      padding: 5px 10px;
+      background-color: #0095f6;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 20px;
+    }
+
+    .suggestions .card .follow-btn:hover {
+      background-color: #007bb5;
+    }
+
+    .posts {
+      margin-top: 80px;
+    }
+
+    .post-card {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+
+    .post-card img {
+      width: 100%;
+      border-radius: 5px;
+    }
+
+    .post-card .caption {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .post-card .comments {
+      margin-top: 10px;
+    }
+
+    .post-card .comments p {
+      margin: 5px 0;
+    }
+
+    .post-card .add-comment {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .post-card .add-comment input {
+      flex-grow: 1;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .post-card .add-comment button {
+      padding: 5px 10px;
+      background-color: #0095f6;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .post-card .add-comment button:hover {
+      background-color: #007bb5;
+    }
+
+    .post {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-image {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .post-caption {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .comments {
+      margin-top: 10px;
+    }
+
+    .comments p {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .add-comment input[type="text"] {
+      width: 70%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .add-comment button {
+      width: 25%;
+      padding: 5px;
+      margin-left: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .add-comment button:hover {
+      background-color: #0056b3;
+    }
   </style>
   <title>Feed</title>
 </head>
@@ -40,6 +258,7 @@
           </div>
         </div>
       </div>
+
       <!-- Display username here -->
       <div class="username">
         <p>Welcome, <span id="username1"></span></p>
@@ -50,122 +269,35 @@
     </div>
   </div>
 
-  <br>
-  <br><br><br>
-  <!-- Main content -->
-  <main>
-    <div class="container">
-      <!-- Feed -->
-      <div class="col-9">
-        <div class="statuses">
-          <!-- Statuses will be dynamically loaded here -->
-        </div>
-        <br>
-        <!-- Posts section -->
-        <div class="posts">
+  <main class="container mt-5">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="posts" id="posts">
           <!-- Posts will be dynamically loaded here -->
+          <div class="no-posts" id="no-posts" style="display: none;">
+            <p>No posts to display.</p>
+          </div>
+        </div>
+        <div class="feed-posts" id="feed-posts">
+          <!-- Feed posts will be dynamically loaded here -->
         </div>
       </div>
-
-      <!-- Suggestions panel -->
-      <div class="col-3">
-        <h4>Suggestions For You</h4>
+      
+      <div class="col-md-4">
+        
         <div class="suggestions" id="suggestions">
-          <!-- Suggestions will be dynamically loaded here -->
+          <h4>Suggestions For You</h4>
+          
         </div>
-      </div>
+      </div> 
+
+
+
+
+      
     </div>
   </main>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', async function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const isScript1 = urlParams.get("script1") === "true";
-      const isScript2 = urlParams.get("script2") === "true";
-      const isScript3 = urlParams.get("script3") === "true";
-      const isScript4 = urlParams.get("script4") === "true";
-      const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
-     
-      if (isScript1 || isScript2 || isScript3 || isScript4) {
-        const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
-        console.log(username)
-        document.getElementById('username1').textContent = `${username}`;
-
-        try {
-          const response = await fetch(`/api/auth/${username}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-          });
-
-          const data = await response.json();
-          console.log(data.profileImageUrl);
-
-          if (data.profileImageUrl) {
-            document.getElementById('profileImage').src = data.profileImageUrl;
-          } else {
-            document.getElementById('profileImage').src = 'assets/img/default-profile.png'; // Use a default image if no profile image is found
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-
-        // Fetch suggestions
-        try {
-          const suggestionsResponse = await fetch('/api/profile/master', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-          });
-
-          const suggestionsData = await suggestionsResponse.json();
-          const suggestionsContainer = document.getElementById('suggestions');
-
-          suggestionsData.forEach(suggestion => {
-
-
-            if (suggestion.username !== username) {
-
-            const suggestionCard = document.createElement('div');
-            suggestionCard.className = 'card';
-
-            const profileImage = document.createElement('img');
-            profileImage.src = suggestion.profileImageUrl || 'assets/img/default-profile.png';
-            profileImage.alt = suggestion.username;
-
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'info';
-
-            const usernameDiv = document.createElement('div');
-            usernameDiv.className = 'name';
-            usernameDiv.textContent = suggestion.username;
-
-            const followButton = document.createElement('button');
-            followButton.className = 'follow-btn';
-            followButton.textContent = 'Follow';
-
-            infoDiv.appendChild(usernameDiv);
-            infoDiv.appendChild(followButton);
-            suggestionCard.appendChild(profileImage);
-            suggestionCard.appendChild(infoDiv);
-            suggestionsContainer.appendChild(suggestionCard);
-            }
-          });
-        } catch (error) {
-          console.error('Error fetching suggestions:', error);
-        }
-      }
-
-      function logOut() {
-        localStorage.removeItem('token');
-        window.location.href = 'index.html';
-      }
-    });
-  </script>
+  <script src="feed.js"></script>
 </body>
 
 </html>
