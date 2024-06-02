@@ -185,22 +185,8 @@ async function func(username,currentUserUsername)
 const followButtons = document.querySelectorAll('.follow-btn');
 followButtons.forEach(button => {
     const username = button.dataset.username;
-    const isFollowed = sessionStorage.getItem(`${currentUserUsername}-${username}-followed`);
-    
-
-
-
-// const isFollowing=  func(username,currentUserUsername);
-// console.log(isFollowing)
-
-//     if (isFollowing === 'true') {
-//       console.log("hiiii");
-//         button.textContent = 'Unfollow';
-//         button.classList.add('unfollow');
-//     }
-
-
-
+ //   const isFollowed = sessionStorage.getItem(`${currentUserUsername}-${username}-followed`);
+  
 (async () => {
   try {
       const isFollowing = await func(username, currentUserUsername);

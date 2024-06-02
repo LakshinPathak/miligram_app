@@ -225,6 +225,38 @@ nav a:hover {
   color: #555;
 }
 
+/* Like button and like count styles */
+.like-btn {
+  background-color: #007bff; /* Initial blue background color */
+  color: white; /* White text color */
+  padding: 10px 20px; /* Padding around the button */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Cursor changes to pointer on hover */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and scale */
+}
+
+.like-btn.liked {
+  background-color: #e74c3c; /* Red background color when liked */
+}
+
+.like-btn:hover {
+  background-color: #0056b3; /* Darker blue color on hover */
+  transform: scale(1.05); /* Slightly increase the size on hover */
+}
+
+.like-btn:active {
+  transform: scale(0.95); /* Slightly decrease the size on click */
+}
+
+.like-count {
+  margin-left: 10px; /* Space between the like button and the like count */
+  font-weight: bold; /* Bold text for the like count */
+  color: #333; /* Darker color for the like count text */
+  vertical-align: middle; /* Align the text vertically in the middle */
+  font-size: 16px; /* Font size for the like count */
+}
+
 
 
   </style>
@@ -298,7 +330,7 @@ nav a:hover {
           <!-- Posts will be dynamically loaded here -->
         </div>
      
-
+   
 
       </div>
 
@@ -369,6 +401,80 @@ nav a:hover {
       }
     }
 
+    async function fun2(post_id,username, currentusername)
+    {
+console.log(currentusername);
+      try {
+    const response = await fetch(`/api/posts/fetch_like/${username}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({ post_id, currentusername })
+    });
+
+    if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    
+  return data;   
+   
+    } else {
+      console.error('Error unfollowing user:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error unfollowing user:', error);
+  }
+
+    }
+
+ async function func(post_id, username, currentusername)
+ {
+const likeButtons = document.querySelectorAll(`#like-btn-${post_id}`);
+    console.log(likeButtons);
+
+likeButtons.forEach(button => {
+
+      (async () => {
+  try {
+
+    console.log(currentusername);
+    var isliked =await  fun2(post_id,username, currentusername);
+     console.log(isliked);
+     console.log("jheekf");
+
+       if (isliked.isliked === true) 
+       {  
+        console.log("sef")
+        console.log(isliked.size);
+      //  button.textContent = isliked ? 'Like' : 'UnLike';
+        button.textContent = 'UnLike';
+        button.classList.add('liked');
+       // button.classList.remove('liked');
+      }
+
+      const likecount = document.querySelectorAll(`#like-count-${post_id}`);
+      console.log(likecount);
+      likecount.forEach(button => {
+
+        button.textContent = "Like Count: "+ isliked.size;
+      });
+
+     
+
+  } catch (error) {
+      console.error('Error:', error);
+  }
+})();
+
+});
+
+ }
+
+
+
+
     async function load_Profile_post()
 
 {
@@ -383,9 +489,9 @@ nav a:hover {
         });
 
         const postsData = await postsResponse.json();
-        console.log(postsData);
+        //console.log(postsData);
        // console.log("kajal")
-        console.log(postsData.length)
+        //console.log(postsData.length)
 
         // for (let i = 0; i < postsData.length; i++) {
 
@@ -400,23 +506,73 @@ nav a:hover {
           const postElement = document.createElement('div');
           postElement.classList.add('post');
           postElement.innerHTML = `
-            <img src="${post.image}" alt="Post Image" class="post-image" height="350px">
-            <p>${post.caption}</p>
-            <button class="delete-btn" onclick="deletePost('${post._id}')">Delete</button>
-            <button class="comment-btn" onclick="addComment('${post._id}')">Add Comment</button>
-            <button class="hide-comment-btn" onclick="hideComments('${post._id}')">Hide Comments</button>
-            <button class="show-comment-btn" onclick="loadComments('${post._id}')">Show Comments</button>
-            <div class="comment" id="comment-${post._id}"></div>
-          `;
+          <img src="${post.image}" alt="Post Image" class="post-image" height="350px">
+        <p>${post.caption}</p>
+        <button class="delete-btn" onclick="deletePost('${post._id}')">Delete</button>
+        <button class="comment-btn" onclick="addComment('${post._id}')">Add Comment</button>
+        <button class="hide-comment-btn" onclick="hideComments('${post._id}')">Hide Comments</button>
+        <button class="show-comment-btn" onclick="loadComments('${post._id}')">Show Comments</button>
+        <button id="like-btn-${post._id}" class="like-btn ${post.isLiked ? 'liked' : ''}" onclick="toggleLike('${post._id}')">
+          ${post.isLiked ? 'Unlike' : 'Like'}
+        </button>
 
-        //  loadComments(post._id)
+         <div class="like-count" id="like-count-${post._id}">Like Count:</div> 
+
+        <div class="comment" id="comment-${post._id}"></div>
+          `;
+          
+
+         // loadComments(post._id)
           postsContainer.appendChild(postElement);
+          func(post._id, post.username, username_profile);
+
         });
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
       loadBio()
     }
+
+
+
+
+
+
+
+
+    async function toggleLike(postId) {
+  try {
+
+
+    const likeButton = document.querySelector(`#like-btn-${postId}`);
+
+ 
+    //const likeCountElement = document.querySelector(`#like-count-${postId}`);
+    const isLiked = likeButton.classList.contains('liked');
+
+    console.log(isLiked);
+
+    const response = await fetch(`/api/posts/${isLiked ? 'UnLike' : 'like'}/${postId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    });
+
+    if (response.ok) {
+     
+      const result = await response.json();
+   window.location.reload(true);
+    } else {
+      alert('Failed to toggle like');
+    }
+  } catch (error) {
+    console.error('Error toggling like:', error);
+    
+  }
+}
+
 
 
 
