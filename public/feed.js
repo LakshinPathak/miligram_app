@@ -336,7 +336,38 @@ async function loadUserPosts(username) {
 
 
   async function postComment(postId, comment, commentsSection) {
-  
+  console.log(postId);
+  console.log("hereeeeeeee");
+
+  const currentUserUsername = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
+  console.log(currentUserUsername);
+  try{
+    const response = await fetch(`/api/profile/${postId}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({ comment,currentUserUsername })
+    });
+
+    if (response.ok) {
+      console.log("Comment Added!!!!");
+      window.location.reload(true);
+    } else {
+      console.error('Error Adding Comment:', response.statusText);
+    }
+
+  }
+  catch (error) {
+    console.error('Error Adding Comment :', error);
+}
+
+
+
+
+
+
   }
 
   function removeUserPosts(username) {
