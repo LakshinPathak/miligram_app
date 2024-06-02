@@ -169,4 +169,120 @@ router.get('/get_comments/:postId', verifyToken, async (req, res) => {
 
 
 
+// Like a post
+router.post('/like/:postId', verifyToken, async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+
+    console.log(postId);
+
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    console.log(post);
+    
+    if (post.likes.includes(req.userId)) {
+      return res.status(400).json({ message: 'Post already liked' });
+    }
+
+    post.likes.push(req.userId);
+    await post.save();
+
+    res.status(200).json({ message: 'Post liked successfully', likes: post.likes.length });
+  } catch (error) {
+    console.error('Error liking post:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+// Unlike a post
+router.post('/unlike/:postId', verifyToken, async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const post = await Post.findById(postId);
+
+
+    console.log("mishra7777");
+    console.log(postId);
+
+    
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const likeIndex = post.likes.indexOf(req.userId);
+    if (likeIndex === -1) {
+      return res.status(400).json({ message: 'Post not liked yet' });
+    }
+
+    post.likes.splice(likeIndex, 1);
+    await post.save();
+
+    res.status(200).json({ message: 'Post unliked successfully', likes: post.likes.length });
+  } catch (error) {
+    console.error('Error unliking post:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+// Fetch like status for a post
+router.post('/fetch_like/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { post_id, currentusername} = req.body;
+
+    console.log()
+
+    // Find the user by their username
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+  
+    
+
+    const user2 = await User.findOne({username: currentusername });
+    
+      // Find the post first from post_id
+      const post = await Post.findById(post_id);
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+      var isliked = false;   
+      if (post.likes.includes(user2._id)) {
+        isliked =true;
+       
+        res.status(200).json({ isliked, size:post.likes.length });
+      }
+      else
+      {
+      
+        // Return the like status
+        res.status(200).json({ isliked , size:post.likes.length});
+      }
+   
+   
+  } catch (error) {
+    console.error('Error fetching like status:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
 module.exports = router;
