@@ -186,6 +186,13 @@ router.post('/unfollow/:username', async (req, res) => {
       { new: true }
     );
 
+    await Relationship.findOneAndUpdate(
+      { username: username },
+      { $pull: { followers: currentUserUsername } },
+      { new: true }
+
+    );
+
     res.status(200).json({ message: 'User unfollowed successfully' });
   } catch (error) {
     console.error('Error unfollowing user:', error);
