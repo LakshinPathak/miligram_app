@@ -38,6 +38,43 @@ router.get('/relation_username/:username', async (req, res) => {
 
 
 
+
+//Route to fetch following-follower count of particular user name
+
+router .get('/fetch_count/:username', async (req, res)=>{
+
+try{
+  const {username} = req.params;
+
+  const relation= await Relationship.findOne({username});
+
+  if(!relation)
+    {
+      return res.status(400).json({message: 'No users found for the given username'});
+    }
+
+    const followerCount = relation.followers.length;
+    const followingCount = relation.following.length;
+
+    res.status(200).json({ followers: followerCount, following: followingCount });
+}
+catch (error) {
+  console.error('Error fetching following-follower count', error);
+  res.status(500).json({ message: 'Internal Server Error' });
+}
+
+
+
+});
+
+
+
+
+
+
+
+
+
 // Route to follow a user
 router.post('/follow/:username', async (req, res) => {
   const { username } = req.params;
@@ -209,12 +246,6 @@ router.get('/:username/fetch_post_feed', async (req, res) => {
     const currentUserRelationship = await Master.findOne({ username });
 
 
-    
-    // if (!currentUserRelationship) {
-    //   return res.status(404).json({ message: 'User not found' });
-    // }
-    
-
     // Fetch posts of users that the current user is following
     const posts = await Post.find({ username });
     console.log(posts);
@@ -229,8 +260,8 @@ router.get('/:username/fetch_post_feed', async (req, res) => {
 // Route to post a comment on a post
 router.post('/:postId/comment', async (req, res) => {
   const { postId } = req.params;
-  const { comment } = req.body;
-  const currentUser = req.user; // Assuming the authenticated user is available in req.user
+  const { comment, currentUser  } = req.body;
+ 
 
   try {
     const post = await Post.findById(postId);
@@ -238,12 +269,22 @@ router.post('/:postId/comment', async (req, res) => {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    post.comments.push({ user: currentUser._id, comment });
+
+    const user_id= await User.findOne(currentUser);
+  
+  //  console.log(currentUser);
+   
+    //console.log(user_id);
+  
+
+    post.comments.push({ user: user_id._id, text: comment });
     await post.save();
+
+   
 
     res.status(200).json({ message: 'Comment added successfully' });
   } catch (error) {
-    console.error('Error posting comment:', error);
+    console.error('Error Adding comment:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
