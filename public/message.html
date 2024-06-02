@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>Messages - MiliGram</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 10px 15px;
+      transition: color 0.3s;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #007bff;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .chat-list, .chat-window {
+      flex: 1;
+      margin-right: 20px;
+    }
+
+    .chat-list {
+      border-right: 1px solid #e0e0e0;
+      max-width: 300px;
+    }
+
+    .chat-list-item {
+      padding: 10px;
+      border-bottom: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .chat-list-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .chat-window {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .message.sent {
+      background-color: #dcf8c6;
+      align-self: flex-end;
+    }
+
+    .message.received {
+      background-color: #ffffff;
+      align-self: flex-start;
+      border: 1px solid #e0e0e0;
+    }
+
+    .message-input {
+      display: flex;
+      padding: 10px;
+    }
+
+    .message-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+    }
+
+    .message-input button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .message-input button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="profile.html">Profile</a>
+      <a href="#" onclick="logOut()">Log Out</a>
+    </nav>
+  </header>
+  <main class="container">
+    <div class="chat-list" id="chat-list">
+      <!-- Chat list items will be dynamically loaded here -->
+    </div>
+    <div class="chat-window">
+      <div class="messages" id="messages">
+        <!-- Messages will be dynamically loaded here -->
+      </div>
+      <div class="message-input">
+        <input type="text" id="message-input" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const username_profile = sessionStorage.getItem("loginusername");
+    let currentChatId = null;
+
+    document.addEventListener('DOMContentLoaded', loadChats);
+
+    async function loadChats() {
+        
+      try {
+        const response = await fetch(`/api/message_chat/${username_profile}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+
+        const chats = await response.json();
+        const chatList = document.getElementById('chat-list');
+
+        chats.forEach(chat => {
+          const chatItem = document.createElement('div');
+          chatItem.classList.add('chat-list-item');
+          chatItem.innerText = chat.participant; // Adjust based on your data structure
+          chatItem.onclick = () => loadMessages(chat._id); // Adjust based on your data structure
+          chatList.appendChild(chatItem);
+        });
+      } catch (error) {
+        console.error('Error fetching chats:', error);
+      }
+    }
+
+    async function loadMessages(chatId) {
+      currentChatId = chatId;
+      try {
+        const response = await fetch(`/api/message_chat/${chatId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+
+        const messages = await response.json();
+        const messagesContainer = document.getElementById('messages');
+        messagesContainer.innerHTML = '';
+
+        messages.forEach(message => {
+          const messageElement = document.createElement('div');
+          messageElement.classList.add('message', message.sender === username_profile ? 'sent' : 'received');
+          messageElement.innerText = message.text; // Adjust based on your data structure
+          messagesContainer.appendChild(messageElement);
+        });
+
+        messagesContainer.scrollTop = messagesContainer.scrollHeight; // Scroll to bottom
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('message-input');
+      const text = input.value;
+      if (!text) return;
+
+      const message = {
+        text,
+        sender: username_profile,
+        chatId: currentChatId
+      };
+
+      socket.emit('sendMessage', message);
+      input.value = '';
+    }
+
+    socket.on('receiveMessage', message => {
+      if (message.chatId === currentChatId) {
+        const messagesContainer = document.getElementById('messages');
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', message.sender === username_profile ? 'sent' : 'received');
+        messageElement.innerText = message.text;
+        messagesContainer.appendChild(messageElement);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    });
+
+    function logOut() {
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    }
+
+
+  </script>
+</body>
+</html>

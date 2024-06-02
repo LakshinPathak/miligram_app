@@ -257,14 +257,29 @@ nav a:hover {
 
       <div class="profile-info">
         <div>
-          <h3 id="follower-count">0</h3>
+          <h3 id="follower-count" onclick="viewFollowersFollowing('followers')">0</h3>
           <p>Followers</p>
         </div>
         <div>
-          <h3 id="following-count">0</h3>
+          <h3 id="following-count" onclick="viewFollowersFollowing('following')">0</h3>
           <p>Following</p>
         </div>
       </div>
+
+
+
+
+
+      <!-- <div class="profile-info">
+        <div onclick="viewFollowersFollowing('followers')">
+          <h3 id="follower-count">0</h3>
+          <p>Followers</p>
+        </div>
+        <div onclick="viewFollowersFollowing('following')">
+          <h3 id="following-count">0</h3>
+          <p>Following</p>
+        </div>
+      </div> -->
 
       
       <br>
@@ -531,6 +546,10 @@ nav a:hover {
     commentDiv.innerHTML = ''; // Clear existing comments for the specific post
 }
 
+
+function viewFollowersFollowing(type) {
+    window.location.href = `followers_following.html?type=${type}&username=${username_profile}`;
+  }
 
 
 

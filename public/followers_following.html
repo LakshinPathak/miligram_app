@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>Followers and Following - MiliGram</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 10px 15px;
+      transition: color 0.3s;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #007bff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .title {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .profile-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #007bff;
+    }
+
+    .action-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .action-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="profile.html">Profile</a>
+      <a href="#" onclick="logOut()">Log Out</a>
+    </nav>
+  </header>
+  <div class="container">
+    <h2 class="title">Followers and Following</h2>
+    <div class="table-container">
+      <h3>Followers</h3>
+      <table id="followers-table">
+        <thead>
+          <tr>
+            <th>Profile Image</th>
+            <th>Username</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Follower rows will be dynamically loaded here -->
+        </tbody>
+      </table>
+    </div>
+    <div class="table-container">
+      <h3>Following</h3>
+      <table id="following-table">
+        <thead>
+          <tr>
+            <th>Profile Image</th>
+            <th>Username</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Following rows will be dynamically loaded here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    const username_profile = sessionStorage.getItem("loginusername");
+    console.log(username_profile);
+
+    async function loadFollowersAndFollowing() {
+      try {
+        const response = await fetch(`/api/profile/followers_following/${username_profile}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        const followersTable = document.getElementById('followers-table').getElementsByTagName('tbody')[0];
+        const followingTable = document.getElementById('following-table').getElementsByTagName('tbody')[0];
+        followersTable.innerHTML = '';
+        followingTable.innerHTML = '';
+
+        data.followers.forEach(user => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><img src="${user.profileImageUrl || 'assets/img/default-profile.png'}" alt="User Avatar" class="profile-img"></td>
+            <td>${user.username}</td>
+            <td><button class="action-btn" onclick="removeFollower('${user.username}')">Remove</button></td>
+          `;
+          followersTable.appendChild(row);
+        });
+
+        data.following.forEach(user => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><img src="${user.profileImageUrl || 'assets/img/default-profile.png'}" alt="User Avatar" class="profile-img"></td>
+            <td>${user.username}</td>
+            <td><button class="action-btn" onclick="unfollowUser('${user.username}')">Unfollow</button></td>
+          `;
+          followingTable.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error fetching followers and following:', error);
+      }
+    }
+
+    function logOut() {
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    }
+
+    async function removeFollower(followerUsername) {
+      try {
+        const response = await fetch(`/api/profile/removeFollower/${followerUsername}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          },
+          body: JSON.stringify({ currentUserUsername: username_profile })
+        });
+
+        const result = await response.json();
+        console.log(result);
+
+        // Reload followers and following list
+        loadFollowersAndFollowing();
+      } catch (error) {
+        console.error('Error removing follower:', error);
+      }
+    }
+
+    async function unfollowUser(followingUsername) {
+      try {
+        const response = await fetch(`/api/profile/unfollowUser/${followingUsername}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          },
+          body: JSON.stringify({ currentUserUsername: username_profile })
+        });
+
+        const result = await response.json();
+        console.log(result);
+
+        // Reload followers and following list
+        loadFollowersAndFollowing();
+      } catch (error) {
+        console.error('Error unfollowing user:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadFollowersAndFollowing);
+  </script>
+</body>
+</html>
