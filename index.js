@@ -35,11 +35,13 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
 const profileRoutes = require('./routes/profile');
+const chatRoutes =require('./routes/message_chat');
 
 // Using routes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/message_chat', chatRoutes);
 
 // Serving HTML files
 app.get('/', (req, res) => {
@@ -79,6 +81,15 @@ app.get('/create_admin.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'create_admin.html'));
 });
 
+
+app.get('/message.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'message.html'));
+});
+
+
+app.get('/followers_following.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'followers_following.html'));
+});
 app.listen(port, () => {
     connect();
     console.log(`Server is running on port ${port}`);

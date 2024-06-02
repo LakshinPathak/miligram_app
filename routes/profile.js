@@ -123,48 +123,6 @@ router.post('/follow/:username', async (req, res) => {
 
 
 
-// Route 
-// router.post('/fetch2/:username', async (req, res) => {
-//   const { username } = req.params;
-//   const { currentUserUsername } = req.body; 
-
-//   try{
-//     //  // Find the user being followed and the current user
-//     //  const userToFollow = await Master.findOne({ username });
-//     //  const currentUser = await Master.findOne({ username: currentUserUsername });
-
-
-
-//     //  let relationship = await Relationship.findOne({ username: currentUserUsername });
-
-//     //  if (!relationship) {
-     
-//     // }
-
-
-//      // Find the relationship record for the current user
-//      const currentUserRelationship = await Relationship.findOne({ username: currentUserUsername });
-
-//      if (!currentUserRelationship) {
-//        return res.status(404).json({ message: 'No relationship record found for the current user' });
-//      }
- 
-//      // Check if the user with the given username is being followed by the current user
-//      const isFollowing = currentUserRelationship.following.includes(username);
-//      console.log(isFollowing);
-//      console.log(currentUserUsername+ "mishra2810"+ username);
-//      // Return the result
-//      res.status(200).json({ isFollowing });
-     
-//   }
-//   catch (error) {
-//     console.error('Error fetching!!!1', error);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-
-
-// });
-
 
 
 
@@ -271,12 +229,6 @@ router.post('/:postId/comment', async (req, res) => {
 
 
     const user_id= await User.findOne(currentUser);
-  
-  //  console.log(currentUser);
-   
-    //console.log(user_id);
-  
-
     post.comments.push({ user: user_id._id, text: comment });
     await post.save();
 
@@ -288,5 +240,110 @@ router.post('/:postId/comment', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+
+
+
+// Route to fetch followers and following with their profile images
+router.get('/followers_following/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    // Find the relationship record for the given username
+    const relationship = await Relationship.findOne({ username });
+
+    if (!relationship) {
+      return res.status(404).json({ message: 'No followers or following users found for the given username' });
+    }
+
+    const { followers, following } = relationship;
+
+    // Fetch user details from the Master table using followers and following usernames
+    const followersDetails = await Master.find({ username: { $in: followers } }, 'username profileImageUrl');
+    const followingDetails = await Master.find({ username: { $in: following } }, 'username profileImageUrl');
+
+    console.log(followersDetails);
+    console.log("mishra12345");
+    // Combine followers and following details
+    const data = {
+      followers: followersDetails,
+      following: followingDetails
+    };
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error('Error fetching followers and following:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+// Route to removeFollower from profile
+router.post('/removeFollower/:username', async (req, res) => {
+  const { username } = req.params;
+  const {currentUserUsername} = req.body; 
+
+  console.log(username+ currentUserUsername)
+  try {
+    const usertoremove = await Master.findOne({ username });
+    const currentUser = await Master.findOne({ username: currentUserUsername });
+
+    if (!usertoremove || !currentUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+
+    // Update the Relationship table's folllower field and remove it if it exists
+    await Relationship.findOneAndUpdate(
+      { username: currentUserUsername },
+      { $pull: { followers: username } },
+      { new: true }
+    );
+
+    res.status(200).json({ message: 'Follower Removed successfully' });
+  } catch (error) {
+    console.error('Error Removing Follower :', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+// Route to unfollowUser from profile
+router.post('/unfollowUser/:username', async (req, res) => {
+  const { username } = req.params;
+  const {currentUserUsername} = req.body; 
+
+  console.log(username+ currentUserUsername)
+  try {
+    const userToUnfollow = await Master.findOne({ username });
+    const currentUser = await Master.findOne({ username: currentUserUsername });
+
+    if (!userToUnfollow || !currentUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+
+    // Update the Relationship table's folllower field and remove it if it exists
+    await Relationship.findOneAndUpdate(
+      { username: currentUserUsername },
+      { $pull: { following: username } },
+      { new: true }
+    );
+
+    res.status(200).json({ message: 'User Unfollowed successfully' });
+  } catch (error) {
+    console.error('Error in UnFollowing User :', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
 
 module.exports = router;
