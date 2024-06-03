@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', async function () {
+
+
+
+
+
   const urlParams = new URLSearchParams(window.location.search);
   const isScript1 = urlParams.get("script1") === "true";
   const isScript2 = urlParams.get("script2") === "true";
@@ -524,4 +529,16 @@ async function postlike(postId)
     e.preventDefault();
     location.reload();
   });
+
+
+
+
+
+
+
 });
+
+
+
+
+  
