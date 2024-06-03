@@ -194,6 +194,9 @@ router.post('/like/:postId', verifyToken, async (req, res) => {
 
     const user2 = await User.findOne({username: currentUserUsername });
 
+    console.log("mishra123");
+    console.log(user2);
+    console.log("mishra456");
 
     if (post.likes.includes(user2._id)) {
       return res.status(400).json({ message: 'Post already liked' });
