@@ -292,13 +292,6 @@ try {
      // button.classList.remove('liked');
     }
 
-    // const likecount = document.querySelectorAll(`#like-count-${post_id}`);
-    // console.log(likecount);
-
-    // likecount.forEach(button => {
-
-    //   button.textContent = "Like Count: "+ isliked.size;
-    // });
 
    
 
@@ -358,6 +351,17 @@ async function loadUserPosts(username) {
            postusername.className = 'post-username';
            postElement.appendChild(postusername);
 
+
+               // Create likecount caption element
+               const likecount = document.createElement('p');
+               likecount.textContent = "Like Count: "+post.likes.length
+               likecount.className = 'post-like-Count';
+               postElement.appendChild(likecount);
+
+
+         
+
+
           // Create comments section
           const commentsSection = document.createElement('div');
           commentsSection.className = 'comments';
@@ -403,7 +407,15 @@ async function loadUserPosts(username) {
           // Append post element to container
           feedPostsContainer.appendChild(postElement);
 
-          fun1(post._id, post.username, currentUserUsername);
+         fun1(post._id, post.username, currentUserUsername);
+
+          
+       
+
+
+           
+        
+    
       });
   } catch (error) {
       console.error('Error loading posts:', error);
