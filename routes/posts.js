@@ -128,15 +128,18 @@ router.delete('/delete_post/:postId', verifyToken, async (req, res) => {
 router.post('/add_comment/:postId', verifyToken, async (req, res) => {
   try {
     const { postId } = req.params;
-    const { comment } = req.body;
+    const { comment , username_profile} = req.body;
 
     const post = await Post.findById(postId);
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
-
-    post.comments.push({ text: comment, user: req.userId });
+    const user2 = await User.findOne({username: username_profile });
+console.log("mishra1");
+    console.log(user2);
+    console.log("mishra2")
+    post.comments.push({ text: comment, user: user2._id , person_name: user2.username});
     await post.save();
 
     res.status(201).json({ message: 'Comment added successfully', comment });
@@ -169,11 +172,11 @@ router.get('/get_comments/:postId', verifyToken, async (req, res) => {
 
 
 
-// Like a post
+// Like a post from profile
 router.post('/like/:postId', verifyToken, async (req, res) => {
   try {
     const { postId } = req.params;
-
+    const{currentUserUsername}=req.body;
 
     console.log(postId);
 
@@ -185,7 +188,11 @@ router.post('/like/:postId', verifyToken, async (req, res) => {
     }
     console.log(post);
     
-    if (post.likes.includes(req.userId)) {
+
+    const user2 = await User.findOne({username: currentUserUsername });
+
+
+    if (post.likes.includes(user2._id)) {
       return res.status(400).json({ message: 'Post already liked' });
     }
 
@@ -200,10 +207,90 @@ router.post('/like/:postId', verifyToken, async (req, res) => {
 });
 
 
-// Unlike a post
+
+// Like a post from feed
+router.post('/like2/:postId', verifyToken, async (req, res) => {
+  try {
+    console.log("lp1");
+    const { postId } = req.params;
+
+    const{currentUserUsername}=req.body;
+
+    console.log(postId);
+
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    console.log(post);
+    
+
+    const user2 = await User.findOne({username: currentUserUsername });
+
+    if (post.likes.includes(user2._id)) {
+      return res.status(400).json({ message: 'Post already liked' });
+    }
+
+    post.likes.push(user2._id);
+    await post.save();
+
+    res.status(200).json({ message: 'Post liked successfully', likes: post.likes.length });
+  } catch (error) {
+    console.error('Error liking post:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+// Unlike a post from feed
+router.post('/unlike2/:postId', verifyToken, async (req, res) => {
+  try {
+    
+    console.log("lp2");
+
+    const { postId } = req.params;
+    const{currentUserUsername}=req.body;
+
+    const post = await Post.findById(postId);
+
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const user2 = await User.findOne({username: currentUserUsername });
+
+
+    const likeIndex = post.likes.indexOf(user2._id);
+
+    if (likeIndex === -1) {
+      return res.status(400).json({ message: 'Post not liked yet' });
+    }
+
+    post.likes.splice(likeIndex, 1);
+    await post.save();
+
+    res.status(200).json({ message: 'Post unliked successfully', likes: post.likes.length });
+ 
+  } catch (error) {
+    console.error('Error unliking post:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+// Unlike a post from profile
 router.post('/unlike/:postId', verifyToken, async (req, res) => {
   try {
     const { postId } = req.params;
+    const{currentUserUsername}=req.body;
     const post = await Post.findById(postId);
 
 
@@ -214,8 +301,12 @@ router.post('/unlike/:postId', verifyToken, async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
+    const user2 = await User.findOne({username: currentUserUsername });
 
-    const likeIndex = post.likes.indexOf(req.userId);
+    const likeIndex = post.likes.indexOf(user2._id);
+    console.log("jinan1");
+    console.log(user2._id);
+    console.log("jinan2")
     if (likeIndex === -1) {
       return res.status(400).json({ message: 'Post not liked yet' });
     }
@@ -233,14 +324,13 @@ router.post('/unlike/:postId', verifyToken, async (req, res) => {
 
 
 
-
 // Fetch like status for a post
 router.post('/fetch_like/:username', async (req, res) => {
   try {
     const { username } = req.params;
     const { post_id, currentusername} = req.body;
 
-    console.log()
+    console.log("lp3");
 
     // Find the user by their username
     const user = await User.findOne({ username });

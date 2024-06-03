@@ -225,7 +225,7 @@ router.get('/:username/fetch_post_feed', async (req, res) => {
 // Route to post a comment on a post
 router.post('/:postId/comment', async (req, res) => {
   const { postId } = req.params;
-  const { comment, currentUser  } = req.body;
+  const { comment, currentUserUsername  } = req.body;
  
 
   try {
@@ -235,13 +235,19 @@ router.post('/:postId/comment', async (req, res) => {
     }
 
 
-    const user_id= await User.findOne(currentUser);
-    post.comments.push({ user: user_id._id, text: comment });
+    const user_id= await User.findOne({username: currentUserUsername});
+    console.log("nirma1"+ currentUserUsername);
+  
+
+    console.log(user_id);
+    console.log("nirma2"+ user_id.username);
+    post.comments.push({ user: user_id._id, text: comment , person_name: user_id.username});
+
     await post.save();
 
    
 
-    res.status(200).json({ message: 'Comment added successfully' });
+    res.status(200).json({ message: 'Comment added successfully',text: comment , person_name: user_id.username });
   } catch (error) {
     console.error('Error Adding comment:', error);
     res.status(500).json({ message: 'Internal Server Error' });
