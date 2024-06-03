@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           usernameDiv.className = 'name';
           usernameDiv.textContent = suggestion.username;
 
+
           const followButton = document.createElement('button');
           followButton.className = 'follow-btn';
           followButton.textContent = 'Follow';
@@ -236,6 +237,80 @@ async function unfollowUser(username, button) {
 }
 
 
+async function fun2(post_id,username, currentusername)
+{
+console.log(currentusername);
+  try {
+const response = await fetch(`/api/posts/fetch_like/${username}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + localStorage.getItem('token')
+  },
+  body: JSON.stringify({ post_id, currentusername })
+});
+
+if (response.ok) {
+const data = await response.json();
+console.log(data);
+
+return data;   
+
+} else {
+  console.error('Error unfollowing user:', response.statusText);
+}
+} catch (error) {
+console.error('Error unfollowing user:', error);
+}
+
+}
+
+
+async function fun1(post_id, username, currentusername)
+{
+
+  const likeButtons = document.querySelectorAll(`#like-button-id-${post_id}`);
+  console.log(likeButtons);
+
+  likeButtons.forEach(button => {
+
+    (async () => {
+try {
+
+  console.log(currentusername);
+  var isliked =await  fun2(post_id,username, currentusername);
+   console.log(isliked);
+   console.log("jheekf");
+
+     if (isliked.isliked === true) 
+     {  
+      console.log("sef")
+      console.log(isliked.size);
+    //  button.textContent = isliked ? 'Like' : 'UnLike';
+      button.textContent = 'UnLike';
+      button.classList.remove('like-button-class');
+     // button.classList.remove('liked');
+    }
+
+    // const likecount = document.querySelectorAll(`#like-count-${post_id}`);
+    // console.log(likecount);
+
+    // likecount.forEach(button => {
+
+    //   button.textContent = "Like Count: "+ isliked.size;
+    // });
+
+   
+
+} catch (error) {
+    console.error('Error:', error);
+}
+})();
+
+});
+
+}
+
 async function loadUserPosts(username) {
 
   try {
@@ -288,7 +363,7 @@ async function loadUserPosts(username) {
           commentsSection.className = 'comments';
           post.comments.forEach(comment => {
               const commentElement = document.createElement('p');
-              commentElement.textContent = "Comments: "+comment.text;
+              commentElement.textContent = "Comments: "+comment.text + " Person name:"+ comment.person_name;
               commentsSection.appendChild(commentElement);
           });
           postElement.appendChild(commentsSection);
@@ -309,11 +384,26 @@ async function loadUserPosts(username) {
               commentInput.value = '';
           });
           addCommentDiv.appendChild(commentButton);
-
           postElement.appendChild(addCommentDiv);
+
+
+          const LikeButton = document.createElement('button');
+          LikeButton.classList.add(`like-button-class`);
+          LikeButton.id = `like-button-id-${post._id}`;
+          LikeButton.textContent = 'Like';
+
+          LikeButton.addEventListener('click', async () => {
+            await  postlike(post._id);
+
+          });
+          postElement.appendChild(LikeButton);
+
+
 
           // Append post element to container
           feedPostsContainer.appendChild(postElement);
+
+          fun1(post._id, post.username, currentUserUsername);
       });
   } catch (error) {
       console.error('Error loading posts:', error);
@@ -327,7 +417,9 @@ async function loadUserPosts(username) {
 
   const currentUserUsername = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
   console.log(currentUserUsername);
+  
   try{
+
     const response = await fetch(`/api/profile/${postId}/comment`, {
       method: 'POST',
       headers: {
@@ -338,6 +430,9 @@ async function loadUserPosts(username) {
     });
 
     if (response.ok) {
+      const data = await  response.json();
+     // console.log(data.person_name);
+      //console.log(data.text);
       console.log("Comment Added!!!!");
       window.location.reload(true);
     } else {
@@ -348,13 +443,67 @@ async function loadUserPosts(username) {
   catch (error) {
     console.error('Error Adding Comment :', error);
 }
+  }
 
 
 
+async function postlike(postId)
+{
+  console.log(postId);
+
+  const currentUserUsername = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
+
+  try{
 
 
+   
+    
+    const likeButton = document.querySelector(`#like-button-id-${postId}`);
+
+      const isLiked = likeButton.classList.contains('like-button-class');
+      console.log(isLiked);
+      //${isLiked ? 'UnLike2' : 'like2'}
+     const  response = await fetch(`/api/posts/${isLiked ? 'like2' : 'Unlike2'}/${postId}`,
+     {
+
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({ currentUserUsername })
+
+    });
+
+
+    if (response.ok) {
+
+      //console.log("Post liked successfully");
+
+    //  likeButton.classList.remove(`like-button-class`);
+     // likeButton.textContent='Unlike';
+      window.location.reload(true);
+    
+    } else {
+      console.error('Error in Likeing Post', response.statusText);
+    }
 
   }
+  catch(error)
+  {
+    console.error('Error in Liking Post:', error);
+  }
+
+
+
+
+
+}
+
+
+
+
+ 
 
   function removeUserPosts(username) {
   }

@@ -652,7 +652,7 @@ likeButtons.forEach(button => {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
-        body: JSON.stringify({ comment })
+        body: JSON.stringify({ comment, username_profile })
       });
 
       if (response.ok) {
