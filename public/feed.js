@@ -517,6 +517,11 @@ async function postlike(postId)
 
  
 
-  function removeUserPosts(username) {
-  }
+ 
+
+
+  document.getElementById('home-link').addEventListener('click', function (e) {
+    e.preventDefault();
+    location.reload();
+  });
 });

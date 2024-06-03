@@ -7,13 +7,6 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .suggestions .card img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-
     body, html {
       margin: 0;
       padding: 0;
@@ -23,48 +16,73 @@
 
     .navbar {
       background-color: #fff;
-      padding: 10px 20px;
+      padding: 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
       position: fixed;
       top: 0;
-      width: 100%;
+      left: 0;
+      width: 250px; /* Increased width */
+      height: 100%;
       z-index: 1;
     }
 
     .logo img {
       height: 30px;
+      margin-bottom: 20px;
     }
 
     .searchbar input {
       padding: 5px 10px;
       border-radius: 20px;
       border: 1px solid #ddd;
+      width: 100%;
+      margin-bottom: 20px;
     }
 
     .nav-links ul {
       list-style: none;
-      display: flex;
-      gap: 20px;
+      padding: 0;
+      width: 100%;
+    }
+
+    .nav-links li {
+      margin-bottom: 10px;
+      width: 100%;
     }
 
     .nav-links a {
       text-decoration: none;
       color: #333;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .nav-links a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .nav-links a img {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
     }
 
     .action {
-      display: flex;
-      align-items: center;
+      margin-top: auto;
+      text-align: center;
     }
 
     .profile_img img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      margin-right: 10px;
+      margin-bottom: 10px;
     }
 
     .username p {
@@ -74,16 +92,22 @@
     .logout a {
       color: #ff0000;
       text-decoration: none;
-      margin-left: 20px;
     }
+
+    .container {
+      margin-left: 270px; /* Adjust margin to avoid overlap with navbar */
+    }
+
+    .suggestions {
+      margin-top: 20px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
     .suggestions h4 {
-  margin-bottom: 10px; /* Add some space below the heading */
-}
-    .suggestions  {
-  position: fixed;
-  top: 120px; /* Adjust the top position as needed */
-  right: 20px; /* Adjust the right position as needed */
-}
+      margin-bottom: 10px;
+    }
+
     .suggestions .card {
       display: flex;
       align-items: center;
@@ -95,13 +119,17 @@
       width: 200px;
     }
 
+    .suggestions .card img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
     .suggestions .card .info {
-      padding: 20px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-grow: 1;
-      margin-right: 20px;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .suggestions .card .name {
@@ -122,17 +150,8 @@
       background-color: #007bb5;
     }
 
-    .suggestions {
-  position: fixed;
-  top: 120px; /* Adjust the top position as needed */
-  right: 20px; /* Adjust the right position as needed */
-  max-height: 70vh; /* Set maximum height as a percentage of the viewport height */
-  overflow-y: auto; /* Enable vertical scrolling */
-  padding-right: 10px; /* Add some padding to avoid cutting off the content */
-}
-
     .posts {
-      margin-top: 80px;
+      margin-top: 20px;
     }
 
     .post-card {
@@ -239,6 +258,70 @@
     .add-comment button:hover {
       background-color: #0056b3;
     }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+      .navbar {
+        width: 200px;
+      }
+
+      .container {
+        margin-left: 220px;
+      }
+
+      .suggestions .card {
+        width: 180px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        width: 180px;
+      }
+
+      .container {
+        margin-left: 200px;
+      }
+
+      .suggestions .card {
+        width: 160px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .navbar {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px;
+      }
+
+      .container {
+        margin-left: 0;
+        margin-top: 80px;
+      }
+
+      .searchbar input {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .nav-links ul {
+        flex-direction: row;
+        justify-content: space-around;
+      }
+
+      .suggestions {
+        margin-top: 20px;
+        width: 100%;
+      }
+
+      .suggestions .card {
+        width: 100%;
+      }
+    }
   </style>
   <title>Feed</title>
 </head>
@@ -246,41 +329,38 @@
 <body>
   <!-- Navigation bar -->
   <div class="navbar">
-    <div class="container">
-      <div class="logo">
-        <img class="c-panel__img" src="assets/img/instagram.svg" alt="Instagram">
-      </div>
-      <div class="searchbar">
-        <input type="text" placeholder="Search...">
-      </div>
-      <div class="nav-links">
-        <ul class="nav-group">
-          <li class="nav-item"><a href="#">Home</a></li>
-          <li class="nav-item"><a href="profile.html">Profile</a></li>
-          <li class="nav-item"><a href="message.html">Messages</a></li>
-        </ul>
-      </div>
-      <div class="action">
-        <div class="profile">
-          <div class="profile_img">
-            <img id="profileImage" src="#" alt="Profile Image">
-          </div>
+    <div class="logo">
+      <img class="c-panel__img" src="assets/img/instagram.svg" alt="Instagram">
+    </div>
+    <div class="searchbar">
+      <input type="text" placeholder="Search...">
+    </div>
+    <div class="nav-links">
+      <ul class="nav-group">
+        <li class="nav-item"><a href="#" id="home-link"><img src="assets/images/home.png" alt="Home"> Home</a></li>
+        <li class="nav-item"><a href="profile.html"><img src="assets/images/profile.png" alt="Profile"> Profile</a></li>
+        <li class="nav-item"><a href="message.html"><img src="assets/images/message.png" alt="Messages"> Messages</a></li>
+        <li class="nav-item"><a href="setting.html"><img src="assets/images/setting.png" alt="Messages"> Settings</a></li>
+      </ul>
+    </div>
+    <div class="action">
+      <div class="profile">
+        <div class="profile_img">
+          <img id="profileImage" src="#" alt="Profile Image">
         </div>
-      </div>
-
-      <!-- Display username here -->
-      <div class="username">
-        <p>Welcome, <span id="username1"></span></p>
-      </div>
-      <div class="logout">
-        <a href="/index.html">Logout</a>
+        <div class="username">
+          <p>Welcome, <span id="username1"></span></p>
+        </div>
+        <div class="logout">
+          <a href="/index.html">Logout</a>
+        </div>
       </div>
     </div>
   </div>
 
   <main class="container mt-5">
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-md-8">
         <div class="posts" id="posts">
           <!-- Posts will be dynamically loaded here -->
           <div class="no-posts" id="no-posts" style="display: none;">
@@ -291,19 +371,11 @@
           <!-- Feed posts will be dynamically loaded here -->
         </div>
       </div>
-      
       <div class="col-md-4">
-        
         <div class="suggestions" id="suggestions">
           <h4>Suggestions For You</h4>
-          
         </div>
-      </div> 
-
-
-
-
-      
+      </div>
     </div>
   </main>
   <script src="feed.js"></script>
