@@ -153,14 +153,17 @@ console.log("mishra1");
 router.get('/get_comments/:postId', verifyToken, async (req, res) => {
   try {
     const { postId } = req.params;
+  
 
     const post = await Post.findById(postId);
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
-
+  
+    
     const comments = post.comments;
+    //const username=post.person_name;
     res.status(200).json(comments);
   } catch (error) {
     console.error('Error fetching comments:', error);
