@@ -545,7 +545,7 @@ likeButtons.forEach(button => {
 
 
     const likeButton = document.querySelector(`#like-btn-${postId}`);
-
+const currentUserUsername= username_profile;
  
     //const likeCountElement = document.querySelector(`#like-count-${postId}`);
     const isLiked = likeButton.classList.contains('liked');
@@ -557,7 +557,8 @@ likeButtons.forEach(button => {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
+      },
+      body: JSON.stringify({  currentUserUsername })
     });
 
     if (response.ok) {
@@ -675,7 +676,6 @@ likeButtons.forEach(button => {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
-           
             
         });
 
