@@ -258,25 +258,6 @@ nav a:hover {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Additional CSS for profile.html */
 
 .profile-header h2 {
@@ -342,6 +323,65 @@ nav a:hover {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Delete button styling */
+.comment button {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+/* Delete button hover effect */
+.comment button:hover {
+    background-color: #ff811a;
+}
 
   </style>
 </head>
@@ -770,8 +810,54 @@ const currentUserUsername= username_profile;
 
             comments.forEach(comment => {
                 const commentElement = document.createElement('p');
-                commentElement.textContent = comment.text+" Person Name: "+ comment.person_name;
+                commentElement.textContent = `Comment: ${comment.text} | Person Name: ${comment.person_name} |  `
+                
+
+
+
+// niche navu add  karyu 11:40 na 
+
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = async () => {
+                    try {
+                        const deleteResponse = await fetch(`/api/posts/delete_comment/${postId}/${comment._id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            },
+                        });
+
+                        if (deleteResponse.ok) {
+
+                            commentDiv.removeChild(commentElement);
+                            console.log("Comment Deleted Successfully!!!!");
+
+                        } else {
+                            alert('Failed to delete comment');
+                        }
+                    } catch (error) {
+                        console.error('Error deleting comment:', error);
+                        alert('Error deleting comment. Please try again later.');
+                    }
+                };
+
+                commentElement.appendChild(deleteButton);
+
+
+
+
+// aaya add karyu
+
+
                 commentDiv.appendChild(commentElement);
+
+
+
+
+
             });
         } else {
             alert('Failed to load comments');

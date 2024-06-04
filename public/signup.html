@@ -89,9 +89,9 @@ body {
             <div class="c-panel group">
                 <img class="c-panel__img" src="assets/img/instagram.svg" alt="Instagram">
                 <div class="c-panel__form">
-                    <input type="text" class="c-panel__input" id="username" placeholder="Username">
-                    <input type="email" class="c-panel__input" id="email" placeholder="Email">
-                    <input type="password" class="c-panel__input" id="password" placeholder="Password">
+                    <input type="text" class="c-panel__input" id="username" placeholder="Username" required>
+                    <input type="email" class="c-panel__input" id="email" placeholder="Email" required>
+                    <input type="password" class="c-panel__input" id="password" placeholder="Password" required>
                     <input type="file" class="c-panel__input" id="profileImage" accept="image/*">
                     <input type="text" class="c-panel__input" id="bio" placeholder="Bio">
                     <a href="#" class="c-btn" onclick="signup()">Sign Up</a>
@@ -124,7 +124,7 @@ body {
                 const data = await response.json();
                 // console.log(data)
                
-                  console.log("hiiiiii")
+                 // console.log("hiiiiii")
                     alert('Signup successful!');
                     window.location.href = `index.html`;
               
