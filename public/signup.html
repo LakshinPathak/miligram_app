@@ -108,6 +108,11 @@ body {
             const profileImage = document.getElementById('profileImage').files[0];
             const bio = document.getElementById('bio').value;
 
+
+            if(!password || !username || !email)
+            {
+              alert('Username, Password, Email is compulsary');
+            }
             const formData = new FormData();
             formData.append('username', username);
             formData.append('email', email);
@@ -125,9 +130,15 @@ body {
                 // console.log(data)
                
                  // console.log("hiiiiii")
-                    alert('Signup successful!');
+                 if(response.ok)
+                 {
+                  alert('Signup successful!');
                     window.location.href = `index.html`;
               
+                 }
+              else{
+                //alert.log("Error in SignUp!!!");
+              }    
                 
             } catch (error) {
                 console.error('Error:', error);
