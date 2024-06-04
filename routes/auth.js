@@ -351,6 +351,10 @@ router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, re
 
      const relation = await Relationship.find({username:username });
 
+
+     const id_user=user._id;
+
+
      // Remove the user from Relationship records where they are being followed
      await Relationship.updateMany(
       { following: username },
@@ -371,6 +375,14 @@ router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, re
     await Post.deleteMany({username});
     await Master.deleteOne({ username });
    await Relationship.deleteOne({ username });
+
+
+    // Remove the user's ID from the likes array of any post
+    await Post.updateMany(
+      { likes: id_user },
+      { $pull: { likes: id_user } }
+    );
+    
 
 console.log('Sucesss!!');
 
