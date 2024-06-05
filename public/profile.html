@@ -784,9 +784,7 @@ likeButtons.forEach(button => {
         });
 
         const postsData = await postsResponse.json();
-        //console.log(postsData);
-       // console.log("kajal")
-        //console.log(postsData.length)
+       
 
         // for (let i = 0; i < postsData.length; i++) {
 
@@ -845,7 +843,7 @@ const currentUserUsername= username_profile;
     //const likeCountElement = document.querySelector(`#like-count-${postId}`);
     const isLiked = likeButton.classList.contains('liked');
 
-    console.log(isLiked);
+    
 
     const response = await fetch(`/api/posts/${isLiked ? 'UnLike' : 'like'}/${postId}`, {
       method: 'POST',
@@ -885,7 +883,7 @@ const currentUserUsername= username_profile;
         if (response.ok) {
           alert('Post deleted successfully');
           window.location.reload(true);
-         // document.getElementById('profile-posts').innerHTML = '';
+         
           loadProfilePosts();
         } else {
           alert('Failed to delete post');
@@ -911,7 +909,7 @@ const currentUserUsername= username_profile;
 
         const data = await response1.json();
         
-       // console.log(data.k+"mishra");
+      
         
         document.getElementById('bio-text').innerHTML = `Bio: ${data.k}`;
       } catch (error) {
@@ -986,7 +984,7 @@ const currentUserUsername= username_profile;
 
 
 
-// niche navu add  karyu 11:40 na 
+
 
 
                 const deleteButton = document.createElement('button');
@@ -1016,12 +1014,6 @@ const currentUserUsername= username_profile;
                 };
 
                 commentElement.appendChild(deleteButton);
-
-
-
-
-// aaya add karyu
-
 
                 commentDiv.appendChild(commentElement);
 

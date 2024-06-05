@@ -15,6 +15,54 @@
   display: inline;
 }
 
+
+
+
+.chat-item-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.chat-list-item {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.chat-list-item:hover {
+  text-decoration: underline;
+}
+
+.profile-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.bio-text {
+  font-size: 14px;
+  color: #777;
+  margin-top: 5px;
+  background-color: #f0f0f0;
+  padding: 5px;
+  border-radius: 5px;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+
+
     /* Your existing styles here */
   </style>
 </head>
@@ -46,45 +94,144 @@
 
     document.addEventListener('DOMContentLoaded', loadChats);
 
-    async function loadChats() {
-      try {
-        const response = await fetch(`/api/message_chat/fetch_fusers`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          },
-          body: JSON.stringify({ username_profile })
-        });
-        const data = await response.json();
-        const uniqueStrings = findUniqueStrings(data[0].following, data[0].followers);
-        const chatList = document.getElementById('chat-list');
+    // async function loadChats() {
+    //   try {
+    //     const response = await fetch(`/api/message_chat/fetch_fusers`, {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': 'Bearer ' + localStorage.getItem('token')
+    //       },
+    //       body: JSON.stringify({ username_profile })
+    //     });
+    //     const data = await response.json();
+    //     const uniqueStrings = findUniqueStrings(data[0].following, data[0].followers);
+    //     const chatList = document.getElementById('chat-list');
 
-        for (const it of uniqueStrings) {
-          const chatItemContainer = document.createElement('div');
-          chatItemContainer.classList.add('chat-item-container');
+    //     for (const it of uniqueStrings) {
+    //       const chatItemContainer = document.createElement('div');
+    //       chatItemContainer.classList.add('chat-item-container');
 
-          const chatItem = document.createElement('div');
-          chatItem.classList.add('chat-list-item');
-          chatItem.onclick = () => loadMessages(it);
-          chatItem.innerText = it;
+    //       const chatItem = document.createElement('div');
+    //       chatItem.classList.add('chat-list-item');
+    //       chatItem.onclick = () => loadMessages(it);
+    //       chatItem.innerText = it;
 
-          const profileImage = document.createElement('img');
-          profileImage.src = (await fun3(it))[0].profileImageUrl;
-          profileImage.classList.add('profile-logo');
+    //       const profileImage = document.createElement('img');
+    //       profileImage.src = (await fun3(it))[0].profileImageUrl;
+    //       profileImage.classList.add('profile-logo');
 
-          chatItemContainer.appendChild(profileImage);
-          chatItemContainer.appendChild(chatItem);
-          chatList.appendChild(chatItemContainer);
-        }
-      } catch (error) {
-        console.error('Error fetching chats:', error);
-      }
+    //       const bio_text= (await fun4(it))[0].bio;
+    //       console.log(bio_text);
+
+    //       chatItemContainer.appendChild(profileImage);
+    //       chatItemContainer.appendChild(chatItem);
+    //       chatList.appendChild(chatItemContainer);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error fetching chats:', error);
+    //   }
+    // }
+
+
+
+
+//     async function loadChats() {
+//   try {
+//     const response = await fetch(`/api/message_chat/fetch_fusers`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': 'Bearer ' + localStorage.getItem('token')
+//       },
+//       body: JSON.stringify({ username_profile })
+//     });
+//     const data = await response.json();
+//     const uniqueStrings = findUniqueStrings(data[0].following, data[0].followers);
+//     const chatList = document.getElementById('chat-list');
+
+//     for (const it of uniqueStrings) {
+//       const chatItemContainer = document.createElement('div');
+//       chatItemContainer.classList.add('chat-item-container');
+
+//       const chatItem = document.createElement('div');
+//       chatItem.classList.add('chat-list-item');
+//       chatItem.onclick = () => loadMessages(it);
+//       chatItem.innerText = it;
+
+//       const profileImage = document.createElement('img');
+//       profileImage.src = (await fun3(it))[0].profileImageUrl;
+//       profileImage.classList.add('profile-logo');
+
+//       const bio_text = (await fun4(it))[0].bio;
+//       console.log(bio_text);
+
+//       const bioTextSpan = document.createElement('span');
+//       bioTextSpan.classList.add('bio-text');
+//       bioTextSpan.innerText = bio_text;
+
+//       chatItemContainer.appendChild(profileImage);
+//       chatItemContainer.appendChild(chatItem);
+//       chatItemContainer.appendChild(bioTextSpan);
+//       chatList.appendChild(chatItemContainer);
+//     }
+//   } catch (error) {
+//     console.error('Error fetching chats:', error);
+//   }
+// }
+
+
+
+
+
+
+async function loadChats() {
+  try {
+    const response = await fetch(`/api/message_chat/fetch_fusers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({ username_profile })
+    });
+    const data = await response.json();
+    const uniqueStrings = findUniqueStrings(data[0].following, data[0].followers);
+    const chatList = document.getElementById('chat-list');
+
+    for (const it of uniqueStrings) {
+      const chatItemContainer = document.createElement('div');
+      chatItemContainer.classList.add('chat-item-container');
+
+      const profileImage = document.createElement('img');
+      profileImage.src = (await fun3(it))[0].profileImageUrl;
+      profileImage.classList.add('profile-logo');
+
+      const chatDetails = document.createElement('div');
+      chatDetails.classList.add('chat-details');
+
+      const chatItem = document.createElement('div');
+      chatItem.classList.add('chat-list-item');
+      chatItem.onclick = () => loadMessages(it);
+      chatItem.innerText = it;
+
+      const bio_text = (await fun4(it))[0].bio;
+      console.log(bio_text);
+
+      const bioTextSpan = document.createElement('span');
+      bioTextSpan.classList.add('bio-text');
+      bioTextSpan.innerText = bio_text;
+
+      chatDetails.appendChild(chatItem);
+      chatDetails.appendChild(bioTextSpan);
+      chatItemContainer.appendChild(profileImage);
+      chatItemContainer.appendChild(chatDetails);
+      chatList.appendChild(chatItemContainer);
     }
-
-
-
-
+  } catch (error) {
+    console.error('Error fetching chats:', error);
+  }
+}
 
 
 
@@ -158,6 +305,8 @@
   // setTimeout(() => {
   //       loadMessages(username);
   //     }, 10000);
+
+  
 }
 
 
@@ -211,6 +360,24 @@
       });
       return await response.json();
     }
+
+
+
+    async function fun4(username) {
+      const response = await fetch(`/api/message_chat/fetch_user_bio`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ username })
+      });
+      return await response.json();
+    }
+
+
+
+
 
     function logOut() {
       localStorage.removeItem('token');
