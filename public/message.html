@@ -243,6 +243,344 @@ nav a:hover {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.chat-list,
+    .chat-window {
+      flex: 1;
+      margin-right: 20px;
+    }
+
+    .chat-list {
+      border-right: 1px solid #e0e0e0;
+      max-width: 300px;
+    }
+
+    .chat-list-item {
+      padding: 10px 20px;
+      border-bottom: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
+    }
+
+    .chat-list-item:hover {
+      background-color: #f0f0f0;
+      box-shadow: inset 0 0 0 2px #e0e0e0; /* Added inset box-shadow on hover */
+    }
+
+    .chat-window {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Updated CSS for chat-list and chat-list-item */
+
+.chat-list {
+  flex: 1;
+  max-width: 300px;
+  padding: 20px;
+  border-right: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #f0f2f5, #e2e4e8);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.chat-list-item {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-list-item:hover {
+  background-color: #e0e0e0;
+  box-shadow: inset 0 0 0 2px #d0d0d0;
+}
+
+.chat-list-item img {
+  border-radius: 50%;
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.chat-list-item .chat-info {
+  flex-grow: 1;
+}
+
+.chat-list-item .chat-info .chat-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.chat-list-item .chat-info .chat-preview {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.chat-list-item .chat-time {
+  font-size: 0.8em;
+  color: #999;
+}
+
+/* Optional: Add a gradient background to the body */
+body {
+  background: linear-gradient(135deg, #d9e4f5, #f0f2f5);
+}
+
+
+
+
+
+
+
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #d9e4f5, #f0f2f5);
+  color: #333;
+}
+
+header {
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px 20px;
+  transition: color 0.3s, background-color 0.3s;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+nav a:hover {
+  color: #007bff;
+  background-color: #f0f0f0;
+}
+
+.container {
+  display: flex;
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.chat-list {
+  flex: 1;
+  max-width: 300px;
+  padding: 20px;
+  border-right: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #f0f2f5, #e2e4e8);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.chat-list-item {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-list-item:hover {
+  background-color: #e0e0e0;
+  box-shadow: inset 0 0 0 2px #d0d0d0;
+}
+
+.chat-list-item img {
+  border-radius: 50%;
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.chat-list-item .chat-info {
+  flex-grow: 1;
+}
+
+.chat-list-item .chat-info .chat-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.chat-list-item .chat-info .chat-preview {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.chat-list-item .chat-time {
+  font-size: 0.8em;
+  color: #999;
+}
+
+.chat-window {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.message {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 70%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message.sent {
+  background-color: #007bff;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.message.received {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  align-self: flex-start;
+}
+
+.message-input {
+  display: flex;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.message-input input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.message-input button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 10px;
+}
+
+.message-input button:hover {
+  background-color: #0056b3;
+}
+
+
+/* Updated CSS for profile image */
+/* Updated CSS for profile image */
+.chat-list-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%; /* Make it round */
+}
+
+.profile-logo {
+  width: 30px; /* Adjust width as needed */
+  height: 30px; /* Adjust height as needed */
+  border-radius: 50%; /* Make it round */
+}
+
+
+
+/* Updated CSS for chat-item-container */
+.chat-item-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Add spacing between items if needed */
+}
+
+.chat-list-item {
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; /* Allow chat item to grow to fill remaining space */
+}
+
+.profile-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%; /* Make it round */
+    margin-right: 10px; /* Add spacing between profile image and chat item */
+}
+
+
+
   </style>
 </head>
 <body>
@@ -266,93 +604,151 @@ nav a:hover {
       </div>
     </div>
   </main>
-  <script src="/socket.io/socket.io.js"></script>
+
   <script>
-    const socket = io();
+    
     const username_profile = sessionStorage.getItem("loginusername");
+    console.log(username_profile);
     let currentChatId = null;
 
     document.addEventListener('DOMContentLoaded', loadChats);
 
+
+    function findUniqueStrings(arr1, arr2) {
+  const combinedArray = arr1.concat(arr2); // Combine the two arrays
+  const uniqueArray = [];
+
+  for (let i = 0; i < combinedArray.length; i++) {
+    const currentString = combinedArray[i];
+    let isUnique = true; // Assume uniqueness initially
+
+    // Check if the current string exists in the unique array so far
+    for (let j = 0; j < uniqueArray.length; j++) {
+      if (currentString === uniqueArray[j]) {
+        isUnique = false; // Found a duplicate, set flag to false
+        break;
+      }
+    }
+
+    // If unique, add it to the unique array
+    if (isUnique) {
+      uniqueArray.push(currentString);
+    }
+  }
+
+  return uniqueArray;
+}
+
     async function loadChats() {
         
       try {
-        const response = await fetch(`/api/message_chat/${username_profile}`, {
-          method: 'GET',
+        const response = await fetch(`/api/message_chat/fetch_fusers`, {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
+          },
+          body: JSON.stringify({ username_profile })
         });
 
-        const chats = await response.json();
-        const chatList = document.getElementById('chat-list');
+        const data = await response.json();
+        if(response.ok)
+        {
+          console.log(data);
+          console.log(data[0].following);
+          console.log(data[0].followers);
+        }
+     
+        const uniqueStrings = findUniqueStrings(data[0].following, data[0].followers);
+       const chatList = document.getElementById('chat-list');
 
-        chats.forEach(chat => {
-          const chatItem = document.createElement('div');
-          chatItem.classList.add('chat-list-item');
-          chatItem.innerText = chat.participant; // Adjust based on your data structure
-          chatItem.onclick = () => loadMessages(chat._id); // Adjust based on your data structure
-          chatList.appendChild(chatItem);
-        });
+      //  (async () => {
+
+      //  for (const it of uniqueStrings)
+      // {
+      //     const chatItem = document.createElement('div');
+      //     chatItem.classList.add('chat-list-item');
+      //     chatItem.innerText = it; 
+
+      //     var p= await fun3(it,username_profile)
+      //     //console.log(p);
+      //    console.log(p[0].profileImageUrl);
+
+
+
+      //    const profileImage = document.createElement('img');
+      //     profileImage.src = p[0].profileImageUrl ;
+      //     profileImage.classList.add('profile-logo');
+      //    // profileImage.alt = it;
+
+      //    //chatItem.onclick = () => loadMessages(it); 
+      //      chatList.appendChild(chatItem);
+      //      chatList.appendChild(profileImage);
+           
+      //   }
+
+      // })();
+
+
+
+
+      (async () => {
+    for (const it of uniqueStrings) {
+        const chatItemContainer = document.createElement('div'); // Container for chat item and profile image
+        chatItemContainer.classList.add('chat-item-container'); // Add a class for styling if needed
+
+        const chatItem = document.createElement('div');
+        chatItem.classList.add('chat-list-item');
+        chatItem.innerText = it;
+
+        var p = await fun3(it, username_profile);
+
+        const profileImage = document.createElement('img');
+        profileImage.src = p[0].profileImageUrl;
+        profileImage.classList.add('profile-logo');
+
+        chatItemContainer.appendChild(profileImage); // Append profile image to container first
+        chatItemContainer.appendChild(chatItem); // Then append chat item to container
+
+        chatList.appendChild(chatItemContainer); // Append container to chat list
+    }
+})();
+
+
+
       } catch (error) {
         console.error('Error fetching chats:', error);
       }
     }
 
-    async function loadMessages(chatId) {
-      currentChatId = chatId;
+   async function fun3(username, loggedinuser)
+    {
+      console.log(username)
       try {
-        const response = await fetch(`/api/message_chat/${chatId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
-        });
-
-        const messages = await response.json();
-        const messagesContainer = document.getElementById('messages');
-        messagesContainer.innerHTML = '';
-
-        messages.forEach(message => {
-          const messageElement = document.createElement('div');
-          messageElement.classList.add('message', message.sender === username_profile ? 'sent' : 'received');
-          messageElement.innerText = message.text; // Adjust based on your data structure
-          messagesContainer.appendChild(messageElement);
-        });
-
-        messagesContainer.scrollTop = messagesContainer.scrollHeight; // Scroll to bottom
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
-    }
-
-    function sendMessage() {
-      const input = document.getElementById('message-input');
-      const text = input.value;
-      if (!text) return;
-
-      const message = {
-        text,
-        sender: username_profile,
-        chatId: currentChatId
-      };
-
-      socket.emit('sendMessage', message);
-      input.value = '';
-    }
-
-    socket.on('receiveMessage', message => {
-      if (message.chatId === currentChatId) {
-        const messagesContainer = document.getElementById('messages');
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message', message.sender === username_profile ? 'sent' : 'received');
-        messageElement.innerText = message.text;
-        messagesContainer.appendChild(messageElement);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
+    const response = await fetch(`/api/message_chat/fetch_user_profile_img`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify({ username })
     });
+
+    if (response.ok) {
+    const data = await response.json();
+   // console.log(data);
+    
+  return data;   
+   
+    } else {
+      console.error('Error fetching profile image of users:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error fetching profile image of users:', error);
+  }   
+    }
+
+  
 
     function logOut() {
       localStorage.removeItem('token');
