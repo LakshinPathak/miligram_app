@@ -163,4 +163,57 @@ router.post('/send_message', async (req, res) => {
   
 
 
+
+
+// Delete a specific message
+router.post('/delete_message', verifyToken, async (req, res) => {
+  const { messageId } = req.body;
+
+  try {
+    await Message.findByIdAndDelete(messageId);
+    res.status(200).json({ message: 'Message deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
+
+// Clear all messages between two users
+router.post('/clear_all_messages', verifyToken, async (req, res) => {
+  const { username_profile, currentChatUser } = req.body;
+
+  try {
+    // Fetch the ObjectId of the current user (username_profile)
+    const currentUser = await User.findOne({ username: username_profile });
+    if (!currentUser) {
+      return res.status(404).json({ error: 'Current user not found' });
+    }
+
+    // Fetch the ObjectId of the recipient user (currentChatUser)
+    const recipientUser = await User.findOne({ username: currentChatUser });
+    if (!recipientUser) {
+      return res.status(404).json({ error: 'Recipient user not found' });
+    }
+
+    const currentUserId = currentUser._id;
+    const recipientUserId = recipientUser._id;
+
+    // Delete all messages between the two users
+    await Message.deleteMany({
+      $or: [
+        { userid: currentUserId, recpid: recipientUserId },
+        { userid: recipientUserId, recpid: currentUserId }
+      ]
+    });
+
+    res.status(200).json({ message: 'All messages cleared successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;
