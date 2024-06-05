@@ -387,6 +387,13 @@ router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, re
     );
     
 
+ // Remove the user's ID from the comment array of any post
+    await Post.updateMany(
+      { 'comments.user': user._id },
+      { $pull: { comments: { user: user._id } } }
+    );
+
+
 console.log('Sucesss!!');
 
     res.status(200).json({ message: 'User deleted successfully' });
