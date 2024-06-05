@@ -50,11 +50,15 @@ try{
 
   if(!relation)
     {
+
       return res.status(400).json({message: 'No users found for the given username'});
     }
 
-    const followerCount = relation.followers.length;
-    const followingCount = relation.following.length;
+//, followers: 0, following: 0
+    const followerCount = relation.followers.length ;
+    const followingCount = relation.following.length ;
+
+   
 
     res.status(200).json({ followers: followerCount, following: followingCount });
 }
@@ -67,7 +71,7 @@ catch (error) {
 
 });
 
-
+//countdata.followers ? countdata.followers : 0
 
 
 
@@ -151,7 +155,7 @@ router.post('/fetch2/:username', async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error('Error fetching!!!1', error);
+    console.error('Error fetching!!!', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
@@ -170,7 +174,7 @@ router.post('/unfollow/:username', async (req, res) => {
   const { username } = req.params;
   const {currentUserUsername} = req.body; // Assuming you're sending the current user's username in the request body
 
-  console.log(username+ currentUserUsername+"oh bole aayay")
+ 
   try {
     const userToUnfollow = await Master.findOne({ username });
     const currentUser = await Master.findOne({ username: currentUserUsername });
@@ -213,8 +217,7 @@ router.get('/:username/fetch_post_feed', async (req, res) => {
 
     // Fetch posts of users that the current user is following
     const posts = await Post.find({ username });
-    console.log(posts);
-    console.log("hey there");
+   
     res.status(200).json(posts);
   } catch (error) {
     console.error('Error fetching posts:', error);
@@ -236,11 +239,7 @@ router.post('/:postId/comment', async (req, res) => {
 
 
     const user_id= await User.findOne({username: currentUserUsername});
-    console.log("nirma1"+ currentUserUsername);
-  
-
-    console.log(user_id);
-    console.log("nirma2"+ user_id.username);
+   
     post.comments.push({ user: user_id._id, text: comment , person_name: user_id.username});
 
     await post.save();
@@ -275,8 +274,7 @@ router.get('/followers_following/:username', async (req, res) => {
     const followersDetails = await Master.find({ username: { $in: followers } }, 'username profileImageUrl');
     const followingDetails = await Master.find({ username: { $in: following } }, 'username profileImageUrl');
 
-    console.log(followersDetails);
-    console.log("mishra12345");
+   
     // Combine followers and following details
     const data = {
       followers: followersDetails,
@@ -300,7 +298,7 @@ router.post('/removeFollower/:username', async (req, res) => {
   const { username } = req.params;
   const {currentUserUsername} = req.body; 
 
-  console.log(username+ currentUserUsername)
+ 
   try {
     const usertoremove = await Master.findOne({ username });
     const currentUser = await Master.findOne({ username: currentUserUsername });
@@ -333,7 +331,7 @@ router.post('/unfollowUser/:username', async (req, res) => {
   const { username } = req.params;
   const {currentUserUsername} = req.body; 
 
-  console.log(username+ currentUserUsername)
+ 
   try {
     const userToUnfollow = await Master.findOne({ username });
     const currentUser = await Master.findOne({ username: currentUserUsername });

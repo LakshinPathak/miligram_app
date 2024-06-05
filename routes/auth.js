@@ -73,6 +73,7 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+
     console.log('Login request:', username, password);
 
     // Check if user exists
@@ -90,6 +91,7 @@ router.post('/login', async (req, res) => {
       {
         return res.status(400).json({ message: 'Invalid password' });
       }
+
     // if (!(await bcrypt.compare(password, user.password))) {
     //   return res.status(400).json({ message: 'Invalid password' });
     // }
@@ -109,7 +111,7 @@ router.post('/login', async (req, res) => {
 router.get('/:username', async (req, res) => {
   try {
     const { username } = req.params;
-    console.log(username + "pathakkk");
+   
     const user = await User.findOne({ username });
 
     if (!user) {
@@ -157,7 +159,6 @@ router.post('/settings', async (req, res) => {
   try {
     const { username, newEmail, newPassword } = req.body;
 
-    console.log(username + newEmail + newPassword+"mishra");
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -165,12 +166,12 @@ router.post('/settings', async (req, res) => {
 
     if (newEmail) {
       user.email = newEmail;
-      console.log(user.email);
+     
     }
 
     if (newPassword) {
       user.password = newPassword;
-      console.log(user.password);
+    
     }
 
     await user.save();
@@ -208,7 +209,9 @@ router.post('/:username/bio', async (req, res) => {
 
     res.status(200).json({ message: 'Bio updated successfully' });
   } catch (error) {
+
     console.error('Error updating bio:', error);
+    
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
@@ -235,12 +238,11 @@ const verifyToken = (req, res, next) => {
 router.get('/:username/fetch_bio',verifyToken, async (req, res) => {
   try {
     const { username } = req.params;
-    // console.log(username+"nirma123");
-     console.log("nirma234");
+  
      const user = await User.findOne({ username });
-    console.log(user.username+"nirma234"); 
+    
     const username1 = user.bio
-     console.log(username1);
+   
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -299,9 +301,10 @@ const verifyAdmin = async (req, res, next) => {
 router.get('/:username/fetch_users', verifyToken, verifyAdmin, async (req, res) => {
   try {
     const { username } = req.params;
-    console.log(username+"pathak1234");
+   
+
     const users = await User.find({});
-    console.log("hiii hello how are you"+ users)
+    
 
 
     res.status(200).json(users);
