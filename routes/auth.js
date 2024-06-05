@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, Post, Master, Relationship } = require('../models/User');
+const { User, Post, Master, Relationship , Message} = require('../models/User');
 // const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');

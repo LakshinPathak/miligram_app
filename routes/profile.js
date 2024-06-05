@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, Post, Master , Relationship} = require('../models/User');
+const { User, Post, Master , Relationship, Message} = require('../models/User');
 
 // Route to fetch all records from the Master table
 router.get('/master', async (req, res) => {

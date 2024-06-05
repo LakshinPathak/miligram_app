@@ -100,17 +100,51 @@ const RelationshipSchema = new mongoose.Schema({
 });
 
 
+
+const MessageSchema = new mongoose.Schema({
+
+  userid: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User model
+    required: true
+  },
+
+  recpid:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User model
+    required: true
+  },
+
+  message_text: {
+    type: String,
+    required: true
+  },
+
+  timestamp:{
+    type: Date,
+    default: Date.now,
+    required: true
+  },
+
+  seen:{
+    type: Boolean
+  }
+
+});
+
+
 // Create models for both schemas
 const User = mongoose.model('User', UserSchema);
 const Post = mongoose.model('Post', PostSchema);
 const Master = mongoose.model('Master', MasterSchema);
 const Relationship = mongoose.model('Relationship', RelationshipSchema);
-
+const Message= mongoose.model('Message',MessageSchema );
 
 // Export the models
 module.exports = {
   User,
   Post,
   Master,
-  Relationship
+  Relationship,
+  Message
 };
