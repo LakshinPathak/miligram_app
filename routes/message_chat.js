@@ -59,40 +59,7 @@ router.post('/fetch_user_profile_img', verifyToken, async (req, res) => {
 
 
 
-// Fetch messages between two users
-// router.post('/fetch_messages', async (req, res) => {
-//   const { username_profile, username } = req.body;
 
-//   try {
-//     // Fetch the ObjectId of the current user (username_profile)
-//     const currentUser = await User.findOne({ username: username_profile });
-//     if (!currentUser) {
-//       return res.status(404).json({ error: 'Current user not found' });
-//     }
-
-//     // Fetch the ObjectId of the recipient user (username)
-//     const recipientUser = await User.findOne({ username: username });
-//     if (!recipientUser) {
-//       return res.status(404).json({ error: 'Recipient user not found' });
-//     }
-
-//     const currentUserId = currentUser._id;
-//     const recipientUserId = recipientUser._id;
-
-//     // Fetch messages involving both users
-//     const messages = await Message.find({
-//       $or: [
-//         { userid: currentUserId, recpid: recipientUserId },
-//         { userid: recipientUserId, recpid: currentUserId }
-//       ]
-//     }).sort({ timestamp: 1 }); // Sort messages by timestamp in ascending order
-
-//     res.json(messages);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
 
 
 
