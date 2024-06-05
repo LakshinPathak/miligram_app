@@ -63,6 +63,68 @@
 
 
 
+/* Style for delete button */
+.delete-button {
+  background-color: #e74c3c; /* Red background */
+  color: white; /* White text */
+  border: none; /* No border */
+  border-radius: 3px; /* Rounded corners */
+  padding: 5px 10px; /* Padding */
+  margin-left: 10px; /* Space between message text and button */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 14px; /* Font size */
+  font-weight: bold; /* Bold text */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth transition for background color and transform */
+}
+
+/* Hover effect for delete button */
+.delete-button:hover {
+  background-color: #c0392b; /* Darker red on hover */
+  transform: translateY(-1px); /* Slight lift on hover */
+}
+
+/* Active effect for delete button */
+.delete-button:active {
+  background-color: #a93226; /* Even darker red when active */
+  transform: translateY(1px); /* Slight push down when clicked */
+}
+
+
+
+
+
+
+
+.clear-all-button {
+  background-color: #3498db; /* Blue background */
+  color: white; /* White text */
+  border: none; /* No border */
+  border-radius: 3px; /* Rounded corners */
+  padding: 5px 10px; /* Padding */
+  margin-top: 10px; /* Space between messages and button */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 14px; /* Font size */
+  font-weight: bold; /* Bold text */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth transition for background color and transform */
+}
+
+.clear-all-button:hover {
+  background-color: #2980b9; /* Darker blue on hover */
+  transform: translateY(-1px); /* Slight lift on hover */
+}
+
+.clear-all-button:active {
+  background-color: #1f618d; /* Even darker blue when active */
+  transform: translateY(1px); /* Slight push down when clicked */
+}
+
+
+
+
+
+
     /* Your existing styles here */
   </style>
 </head>
@@ -266,48 +328,104 @@ async function loadChats() {
 
 
 
-    async function loadMessages(username) {
-  currentChatUser = username;
-  const response = await fetch(`/api/message_chat/fetch_messages`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token')
-    },
-    body: JSON.stringify({ username_profile, username })
-  });
-  const messages = await response.json();
-  const messagesContainer = document.getElementById('messages');
-  messagesContainer.innerHTML = '';
+//     async function loadMessages(username) {
+//   currentChatUser = username;
+//   const response = await fetch(`/api/message_chat/fetch_messages`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': 'Bearer ' + localStorage.getItem('token')
+//     },
+//     body: JSON.stringify({ username_profile, username })
+//   });
+//   const messages = await response.json();
+//   const messagesContainer = document.getElementById('messages');
+//   messagesContainer.innerHTML = '';
 
-  messages.forEach(message => {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message');
-    messageElement.classList.add(message.userid.username === username_profile ? 'sent' : 'received');
+//   messages.forEach(message => {
+//     const messageElement = document.createElement('div');
+//     messageElement.classList.add('message');
+//     messageElement.classList.add(message.userid.username === username_profile ? 'sent' : 'received');
 
-    // Create an element for the username
-    const usernameElement = document.createElement('span');
-    usernameElement.classList.add('message-username');
-    usernameElement.innerText = message.userid.username;
+//     // Create an element for the username
+//     const usernameElement = document.createElement('span');
+//     usernameElement.classList.add('message-username');
+//     usernameElement.innerText = message.userid.username;
 
-    // Create an element for the message text
-    const messageTextElement = document.createElement('span');
-    messageTextElement.classList.add('message-text');
-    messageTextElement.innerText = message.message_text;
+//     // Create an element for the message text
+//     const messageTextElement = document.createElement('span');
+//     messageTextElement.classList.add('message-text');
+//     messageTextElement.innerText = message.message_text;
 
-    // Append the username and message text to the message element
-    messageElement.appendChild(usernameElement);
-    messageElement.appendChild(messageTextElement);
+//     // Append the username and message text to the message element
+//     messageElement.appendChild(usernameElement);
+//     messageElement.appendChild(messageTextElement);
 
-    messagesContainer.appendChild(messageElement);
-  });
-
-  // setTimeout(() => {
-  //       loadMessages(username);
-  //     }, 10000);
+//     messagesContainer.appendChild(messageElement);
+//   });
 
   
-}
+// }
+
+
+
+
+
+
+async function loadMessages(username) {
+      currentChatUser = username;
+      const response = await fetch(`/api/message_chat/fetch_messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ username_profile, username })
+      });
+      const messages = await response.json();
+      const messagesContainer = document.getElementById('messages');
+      messagesContainer.innerHTML = '';
+
+      messages.forEach(message => {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.classList.add(message.userid.username === username_profile ? 'sent' : 'received');
+
+        // Create an element for the username
+        const usernameElement = document.createElement('span');
+        usernameElement.classList.add('message-username');
+        usernameElement.innerText = message.userid.username;
+
+        // Create an element for the message text
+        const messageTextElement = document.createElement('span');
+        messageTextElement.classList.add('message-text');
+        messageTextElement.innerText = message.message_text;
+
+        // Create a delete button
+        const deleteButton = document.createElement('span');
+        deleteButton.classList.add('delete-button');
+        deleteButton.innerText = 'Delete';
+        deleteButton.onclick = () => deleteMessage(message._id);
+
+        // Append the username, message text, and delete button to the message element
+        messageElement.appendChild(usernameElement);
+        messageElement.appendChild(messageTextElement);
+        messageElement.appendChild(deleteButton);
+
+        messagesContainer.appendChild(messageElement);
+
+      });
+
+        // Add "Clear All Messages" button after loading messages
+  const clearAllButton = document.createElement('button');
+  clearAllButton.classList.add('clear-all-button');
+  clearAllButton.innerText = 'Clear All Messages';
+  clearAllButton.onclick = clearAllMessages;
+  messagesContainer.appendChild(clearAllButton);
+    }
+
+
+
 
 
     async function sendMessage() {
@@ -362,7 +480,6 @@ async function loadChats() {
     }
 
 
-
     async function fun4(username) {
       const response = await fetch(`/api/message_chat/fetch_user_bio`, {
         method: 'POST',
@@ -375,6 +492,41 @@ async function loadChats() {
       return await response.json();
     }
 
+
+
+
+    async function deleteMessage(messageId) {
+      const response = await fetch(`/api/message_chat/delete_message`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ messageId })
+      });
+
+      if (response.ok) {
+        loadMessages(currentChatUser);
+      }
+    }
+
+
+
+    
+    async function clearAllMessages() {
+      const response = await fetch(`/api/message_chat/clear_all_messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ username_profile, currentChatUser })
+      });
+
+      if (response.ok) {
+        loadMessages(currentChatUser);
+      }
+    }
 
 
 
