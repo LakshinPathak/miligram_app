@@ -684,11 +684,11 @@ nav a:hover {
             }
         });
           const countdata= await countResponse.json();
-          console.log(countdata);
-          console.log("kajal24");
+          //console.log(countdata);
+         
 
-    document.getElementById('follower-count').innerText = countdata.followers;
-    document.getElementById('following-count').innerText = countdata.following;
+    document.getElementById('follower-count').innerText = countdata.followers   
+    document.getElementById('following-count').innerText = countdata.following  
       }
       catch (error) {
         console.error('Error fetching count:', error);
