@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, Post, Master , Relationship, Message} = require('../models/User');
+const { User, Post, Master , Relationship, Message, Bookmark} = require('../models/User');
 
 // Route to fetch all records from the Master table
 router.get('/master', async (req, res) => {
@@ -157,6 +157,37 @@ router.post('/fetch2/:username', async (req, res) => {
   } catch (error) {
     console.error('Error fetching!!!', error);
     res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+// Fetch bookmarked posts for a specific user
+router.get('/bookmarks/:username', async (req, res) => {
+  try {
+      const { username } = req.params;
+
+      // Find bookmarks for the specified user
+      const bookmarks = await Bookmark.find({ current_username: username });
+
+      // Get details of the bookmarked posts
+      const bookmarkedPosts = [];
+      for (const bookmark of bookmarks) {
+          const postId = bookmark.id_post;
+          const post = await Post.findById(postId);
+          bookmarkedPosts.push(post);
+      }
+
+      res.json(bookmarkedPosts);
+  } catch (error) {
+      console.error('Error fetching bookmarked posts:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 

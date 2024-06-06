@@ -133,12 +133,33 @@ const MessageSchema = new mongoose.Schema({
 });
 
 
+
+const BookmarkSchema = new mongoose.Schema({
+
+
+  current_username: {
+    type: String,
+    required: true
+  },
+  friend_username: {
+    type: String,
+    required: true
+  },
+  id_post: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post', // Reference to the Post model
+    required: true
+  }
+
+});
+
 // Create models for both schemas
 const User = mongoose.model('User', UserSchema);
 const Post = mongoose.model('Post', PostSchema);
 const Master = mongoose.model('Master', MasterSchema);
 const Relationship = mongoose.model('Relationship', RelationshipSchema);
 const Message= mongoose.model('Message',MessageSchema );
+const Bookmark= mongoose.model('Bookmark',BookmarkSchema );
 
 // Export the models
 module.exports = {
@@ -146,5 +167,6 @@ module.exports = {
   Post,
   Master,
   Relationship,
-  Message
+  Message,
+  Bookmark
 };

@@ -90,6 +90,12 @@ app.get('/message.html', (req, res) => {
 app.get('/followers_following.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'followers_following.html'));
 });
+
+
+app.get('/bookmark.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'bookmark.html'));
+});
+
 app.listen(port, () => {
     connect();
     console.log(`Server is running on port ${port}`);

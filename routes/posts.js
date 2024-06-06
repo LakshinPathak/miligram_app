@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 // const User = require('../models/User');
 // const Post = require('../models/Post');
-const { User, Post , Master, Relationship,  Message} = require('../models/User');
+const { User, Post , Master, Relationship,  Message, Bookmark} = require('../models/User');
 
 
 // Define your routes for posts here
@@ -370,6 +370,53 @@ router.post('/fetch_like/:username', async (req, res) => {
 
 
 
+
+// Bookmark a post
+router.post('/bookmark_post', verifyToken, async (req, res) => {
+  try {
+    const { postId, postUsername, currentUserUsername } = req.body;
+
+    // Check if the bookmark already exists
+    const existingBookmark = await Bookmark.findOne({
+      current_username: currentUserUsername,
+      friend_username: postUsername,
+      id_post: postId
+    });
+
+    if (existingBookmark) {
+      return res.status(400).json({ message: 'Post is already bookmarked' });
+    }
+
+    // If the bookmark does not exist, create a new one
+    const bookmark = new Bookmark({
+      current_username: currentUserUsername,
+      friend_username: postUsername,
+      id_post: postId
+    });
+
+    await bookmark.save();
+    res.status(201).json({ message: 'Post bookmarked successfully' });
+  } catch (error) {
+    console.error('Error bookmarking post:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Delete a comment by ID
 router.delete('/delete_comment/:postId/:commentId', verifyToken, async (req, res) => {
   try {
@@ -423,6 +470,7 @@ router.get('/search', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 
