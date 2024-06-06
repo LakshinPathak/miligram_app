@@ -401,4 +401,30 @@ router.delete('/delete_comment/:postId/:commentId', verifyToken, async (req, res
 
 
 
+
+router.get('/search', async (req, res) => {
+  const queryString = req.query.query;
+  
+  console.log("mishra1");
+  console.log(queryString);
+
+  try {
+      const users = await User.find({
+        isAdmin: false, // Ensure isAdmin is false
+          $or: [
+              { username: { $regex: queryString, $options: 'i' } }, // Case-insensitive regex search
+              { bio: { $regex: queryString, $options: 'i' } }
+          ]
+      }).select('username bio profileImageUrl');
+
+      res.json(users);
+  } catch (error) {
+      console.error('Error searching for users:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
+
 module.exports = router;
