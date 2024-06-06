@@ -290,7 +290,8 @@ const username_profile = sessionStorage.getItem("loginusername");
         const data = await response.json();
         
         if (data.message === 'Post created successfully') {
-          window.location.href = `feed.html?script2=true&fusername=${username_profile}`;
+          window.location.href = `feed.html?script2=true`;
+          //&fusername=${username_profile}
         } else {
           alert(data.message);
         }
@@ -301,7 +302,8 @@ const username_profile = sessionStorage.getItem("loginusername");
     }
     function feed()
     {
-      window.location.href=`feed.html?script4=true&fusername=${username_profile}`
+      window.location.href=`feed.html?script1=true`
+      //&fusername=${username_profile}
     }
     function logOut() {
       localStorage.removeItem('token');
