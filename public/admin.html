@@ -245,6 +245,7 @@ const urlParams = new URLSearchParams(window.location.search);
       localStorage.removeItem('token');
       sessionStorage.clear();
       window.location.href = 'index.html';
+      history.pushState(null, null, '/index.html');
     }
 
     document.addEventListener('DOMContentLoaded', fetchUsers);
