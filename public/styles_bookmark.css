@@ -118,3 +118,19 @@ header {
 .navbar-links a:hover {
     text-decoration: underline;
 }
+
+
+/* CSS for delete button */
+.delete-button {
+    background-color: #dc3545; /* Red background color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}

@@ -44,11 +44,53 @@ function displayBookmarkedPosts(bookmarkedPosts) {
         likeCount.textContent = "Likes: " + post.likes.length;
         likeCount.className = 'bookmarked-post-likes';
 
+
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.className = 'delete-button';
+        deleteButton.addEventListener('click', async () => {
+            await deleteBookmark(post._id); 
+
+          
+        });
+
+
+
+
         postElement.appendChild(postImage);
         postElement.appendChild(postCaption);
         postElement.appendChild(postUsername);
         postElement.appendChild(likeCount);
+        postElement.appendChild(deleteButton);
 
         bookmarkedPostsContainer.appendChild(postElement);
     });
+
+
+
+    // Function to delete a bookmarked post
+async function deleteBookmark(postId) {
+    try {
+        const response = await fetch(`/api/profile/delete_bookmark/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to delete bookmarked post');
+        }
+        else{
+            window.location.reload(true);
+        }
+    } catch (error) {
+        console.error('Error deleting bookmarked post:', error);
+    }
 }
+
+}
+
+
+
