@@ -501,6 +501,199 @@
 }
 
 
+
+
+.search-container {
+    position: relative;
+    width: auto;
+}
+
+#search-bar {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.search-result-item {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.search-result-item:hover {
+    background-color: #f0f0f0;
+}
+
+.search-result-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.search-result-item div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+
+
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+.search-input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+#search-bar {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.search-result-item {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.search-result-item:hover {
+    background-color: #f0f0f0;
+}
+
+.search-result-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.search-result-item div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+
+
+
+
+
+.search-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px; /* Adds space below the search bar */
+}
+
+.search-input-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff; /* White background */
+    border-radius: 25px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 8px 15px; /* Padding inside the container */
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    opacity: 0.7; /* Slightly transparent icon */
+}
+
+#search-bar {
+    width: 100%;
+    padding: 8px;
+    border: none; /* Removes default border */
+    outline: none; /* Removes default outline */
+    border-radius: 25px; /* Matches the container's rounded corners */
+    background-color: transparent; /* Transparent background to blend with container */
+}
+
+#search-bar::placeholder {
+    color: #aaa; /* Placeholder text color */
+    font-style: italic; /* Italic placeholder text */
+}
+
+#search-bar:focus {
+    background-color: #f0f0f0; /* Slightly different background on focus */
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    border-radius: 0 0 25px 25px; /* Matches the container's rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    z-index: 1000; /* Ensures the results appear above other elements */
+}
+
+.search-result-item {
+    padding: 8px;
+    border-bottom: 1px solid #eee; /* Light border between items */
+    cursor: pointer;
+}
+
+.search-result-item:hover {
+    background-color: #f9f9f9; /* Slightly different background on hover */
+}
+
+.search-result-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Circular profile image */
+    margin-right: 10px;
+}
+
+.search-result-item div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+
+
   </style>
   <title>Feed</title>
 </head>
@@ -511,9 +704,30 @@
     <div class="logo">
       <img class="c-panel__img" src="assets/img/instagram.svg" alt="Instagram">
     </div>
-    <div class="searchbar">
-      <input type="text" placeholder="Search...">
+    <!-- <div class="searchbar">
+      <input type="text" id="searchInput" placeholder="Search for users...">
+      <div id="searchResults"></div>
+    </div> -->
+
+    <!-- <div class="search-container">
+      <img src="assets/images/search.png" alt="Search">
+      <input type="text" id="search-bar" placeholder="Search users...">
+      <div id="search-results" class="search-results"></div>
+  </div> -->
+
+
+
+  <div class="search-container">
+    <div class="search-input-container">
+      <img src="assets/images/search.png" alt="Search" class="search-icon">
+      <input type="text" id="search-bar" placeholder="Search users...">
     </div>
+    <div id="search-results" class="search-results"></div>
+  </div>
+
+  
+
+   
     <div class="nav-links">
       <ul class="nav-group">
         <li class="nav-item"><a href="#" id="home-link"><img src="assets/images/home.png" alt="Home"> Home</a></li>

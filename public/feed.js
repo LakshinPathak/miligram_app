@@ -531,6 +531,110 @@ async function postlike(postId)
   });
 
 
+// const searchInput = document.getElementById('searchInput');
+// const searchResults = document.getElementById('searchResults');
+
+// searchInput.addEventListener('input', async () => {
+//     const searchString = searchInput.value.trim();
+
+//     if (searchString.length === 0) {
+//         // Clear search results if input is empty
+//         searchResults.innerHTML = '';
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch(`/api/posts/search?query=${searchString}`, {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 // Add authorization header if needed
+//             }
+//         });
+
+//         if (response.ok) {
+//             const users = await response.json();
+//             displaySearchResults(users);
+//         } else {
+//             console.error('Failed to fetch search results:', response.statusText);
+//         }
+//     } catch (error) {
+//         console.error('Error searching for users:', error);
+//     }
+// });
+
+// function displaySearchResults(users) {
+//     // Clear previous search results
+//     searchResults.innerHTML = '';
+
+//     if (users.length === 0) {
+//         searchResults.innerHTML = '<p>No users found</p>';
+//         return;
+//     }
+
+//     users.forEach(user => {
+//         const userCard = document.createElement('div');
+//         userCard.classList.add('user-card');
+//         userCard.innerHTML = `
+//             <img src="${user.profileImageUrl}" alt="Profile Image">
+//             <div>
+//                 <h3>${user.username}</h3>
+//                 <p>${user.bio}</p>
+//             </div>
+//         `;
+//         searchResults.appendChild(userCard);
+//     });
+// }
+
+
+
+
+const searchBar = document.getElementById('search-bar');
+const searchResults = document.getElementById('search-results');
+
+searchBar.addEventListener('input', async () => {
+    const query = searchBar.value.trim();
+    if (query.length > 0) {
+        try {
+            const response = await fetch(`/api/posts/search?query=${encodeURIComponent(query)}`);
+            const users = await response.json();
+            displayResults(users);
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
+    } else {
+        searchResults.innerHTML = '';
+        searchResults.style.display = 'none';
+    }
+});
+
+function displayResults(users) {
+    searchResults.innerHTML = '';
+    if (users.length > 0) {
+        users.forEach(user => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+
+            const profileImage = document.createElement('img');
+            profileImage.src = user.profileImageUrl;
+            profileImage.alt = user.username;
+
+            const userInfo = document.createElement('div');
+            userInfo.innerHTML = `<strong>${user.username}</strong><br>${user.bio}`;
+
+            resultItem.appendChild(profileImage);
+            resultItem.appendChild(userInfo);
+
+            searchResults.appendChild(resultItem);
+        });
+        searchResults.style.display = 'block';
+    } else {
+        searchResults.style.display = 'none';
+    }
+}
+
+
+
 
 
 
