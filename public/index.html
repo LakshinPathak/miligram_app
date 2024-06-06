@@ -219,6 +219,7 @@ body {
         const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: {
+            
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({ username, password }) // Updated to send email and password
@@ -233,13 +234,15 @@ body {
           const loggedInUser = document.getElementById('username').value;
           console.log(loggedInUser);
           sessionStorage.setItem('loginusername',loggedInUser);
+          sessionStorage.setItem('admin_name1',username);
           if (data.isAdmin) {
                 // Redirect to the Admin dashboard
-               window.location.href = `/admin.html?script6=true&admin_name=${username}`
+               window.location.href = `/admin.html`
              } 
              else
              {
-              window.location.href =  `feed.html?script1=true&fusername=${loggedInUser}`;
+              window.location.href =  `feed.html?script1=true`;
+              //&fusername=${loggedInUser}
              }
          
         } else {

@@ -5,14 +5,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
   const urlParams = new URLSearchParams(window.location.search);
+
   const isScript1 = urlParams.get("script1") === "true";
   const isScript2 = urlParams.get("script2") === "true";
   const isScript3 = urlParams.get("script3") === "true";
   const isScript4 = urlParams.get("script4") === "true";
   const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
-  const currentUserUsername = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
+  const currentUserUsername = urlParams.get("fusername") || sessionStorage.getItem("loginusername") ;
   if (isScript1 || isScript2 || isScript3 || isScript4) {
-    const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
+    const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername") ;
+    //loginusername2
     console.log(username);
     document.getElementById('username1').textContent = `${username}`;
 

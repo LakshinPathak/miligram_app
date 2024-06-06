@@ -127,13 +127,14 @@
 const urlParams = new URLSearchParams(window.location.search);
      // const isScript5 = urlParams.get("script5") === "true";
       const isScript6= urlParams.get("script6") === "true";
-      const username = urlParams.get("admin_name");
-      if  ( isScript6) {
-        const username = urlParams.get("admin_name");
+      //const username = urlParams.get("admin_name");
+      // if  ( isScript6) {
+        const username =  sessionStorage.getItem("admin_name1");
+       // console.log(username);
         console.log(username+"heloooo");
         document.getElementById('username1').innerHTML = `Hello: ${username}`;
 
-      }
+      // }
 
 
 
