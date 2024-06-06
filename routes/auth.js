@@ -380,6 +380,11 @@ router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, re
    await Relationship.deleteOne({ username });
 
 
+   // Delete user from Bookmark table if friend_username or current_username matches username
+   await Bookmark.deleteMany({ $or: [{ friend_username: username }, { current_username: username }] });
+
+
+
     // Remove the user's ID from the likes array of any post
     await Post.updateMany(
       { likes: id_user },
