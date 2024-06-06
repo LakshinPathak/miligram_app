@@ -589,6 +589,8 @@ async function postlike(postId)
 
 
 
+    //below working at 13:50
+
 const searchBar = document.getElementById('search-bar');
 const searchResults = document.getElementById('search-results');
 
@@ -605,8 +607,12 @@ searchBar.addEventListener('input', async () => {
     } else {
         searchResults.innerHTML = '';
         searchResults.style.display = 'none';
+        window.location.reload(true);
     }
 });
+
+
+
 
 function displayResults(users) {
     searchResults.innerHTML = '';
