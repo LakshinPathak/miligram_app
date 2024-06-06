@@ -10,10 +10,11 @@ document.addEventListener('DOMContentLoaded', async function () {
   const isScript2 = urlParams.get("script2") === "true";
   const isScript3 = urlParams.get("script3") === "true";
   const isScript4 = urlParams.get("script4") === "true";
-  const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
-  const currentUserUsername = urlParams.get("fusername") || sessionStorage.getItem("loginusername") ;
+  //urlParams.get("fusername") ||
+  const username =  sessionStorage.getItem("loginusername");
+  const currentUserUsername =  sessionStorage.getItem("loginusername") ; //urlParams.get("fusername") ||
   if (isScript1 || isScript2 || isScript3 || isScript4) {
-    const username = urlParams.get("fusername") || sessionStorage.getItem("loginusername") ;
+    const username =  sessionStorage.getItem("loginusername") ;
     //loginusername2
     console.log(username);
     document.getElementById('username1').textContent = `${username}`;
@@ -720,7 +721,30 @@ function displayResults(users) {
 
 
 
+// function logOut() {
+//   sessionStorage.clear();
+//   window.location.href = 'index.html';
+// }
 
+
+// Function to clear session storage
+function clearSessionStorage() {
+  
+  sessionStorage.clear();
+}
+
+// Add an event listener to the logout link
+document.getElementById('logout-link').addEventListener('click', function(event) {
+  // Prevent the default action of the anchor tag
+  event.preventDefault();
+
+  // Call the function to clear session storage
+  clearSessionStorage();
+
+  // Redirect the user to the logout page or any other page
+  window.location.href = '/index.html';
+  history.pushState(null, null, '/index.html');
+});
 
 
 

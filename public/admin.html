@@ -243,6 +243,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
     function logOut() {
       localStorage.removeItem('token');
+      sessionStorage.clear();
       window.location.href = 'index.html';
     }
 

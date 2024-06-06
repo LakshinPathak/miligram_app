@@ -306,7 +306,9 @@ body {
 
     function logOut() {
       localStorage.removeItem('token');
+      sessionStorage.clear();
       window.location.href = 'index.html';
+      history.pushState(null, null, '/index.html');
     }
 
     function goToProfile() {
