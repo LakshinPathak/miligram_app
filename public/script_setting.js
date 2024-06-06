@@ -58,5 +58,28 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       
     }
+
+
+
+    function clearSessionStorage() {
+  
+      sessionStorage.clear();
+    }
+    
+    // Add an event listener to the logout link
+    document.getElementById('logout-link').addEventListener('click', function(event) {
+      // Prevent the default action of the anchor tag
+      event.preventDefault();
+    
+      // Call the function to clear session storage
+      clearSessionStorage();
+    
+      // Redirect the user to the logout page or any other page
+      window.location.href = '/index.html';
+      history.pushState(null, null, '/index.html');
+    });
+
+
+    
   });
   
