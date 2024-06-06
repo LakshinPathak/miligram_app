@@ -409,6 +409,22 @@ async function loadUserPosts(username) {
 
 
 
+
+            // Create bookmark button
+            const bookmarkButton = document.createElement('button');
+            bookmarkButton.classList.add('bookmark-button');
+            bookmarkButton.textContent = 'Bookmark';
+  
+
+            bookmarkButton.addEventListener('click', async () => {
+                await bookmarkPost(post._id, post.username);
+            });
+
+              postElement.appendChild(bookmarkButton);
+
+
+
+
           // Append post element to container
           feedPostsContainer.appendChild(postElement);
 
@@ -461,6 +477,64 @@ async function loadUserPosts(username) {
     console.error('Error Adding Comment :', error);
 }
   }
+
+
+
+
+
+
+
+  async function bookmarkPost(postId, postUsername) {
+    try {
+      console.log(postId+ postUsername);
+
+        const response = await fetch('/api/posts/bookmark_post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token') 
+            },
+            body: JSON.stringify({postId,postUsername,currentUserUsername})
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert('Post bookmarked successfully!');
+        } else {
+            alert('Message: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while bookmarking the post.');
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -638,6 +712,9 @@ function displayResults(users) {
         searchResults.style.display = 'none';
     }
 }
+
+
+
 
 
 
