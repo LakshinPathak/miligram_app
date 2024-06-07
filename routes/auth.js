@@ -408,4 +408,89 @@ console.log('Sucesss!!');
   }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Delete a user from profile
+router.delete('/delete_user_from_profile', verifyToken, async (req, res) => {
+  try {
+    const { username } = req.body;
+    console.log("kajal1234"+ username);
+
+    
+    const user = await User.findOne({username:username });
+
+    const posts= await Post.find({username:username });
+
+    const master = await Master.find({username:username });
+
+     const relation = await Relationship.find({username:username });
+
+
+     const id_user=user._id;
+
+
+     // Remove the user from Relationship records where they are being followed
+     await Relationship.updateMany(
+      { following: username },
+      { $pull: { following: username } }
+    );
+
+      // Remove the user from Relationship records where they are being following
+      await Relationship.updateMany(
+        { followers: username },
+        { $pull: { followers: username } }
+      );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    await User.deleteOne({ username });
+    await Post.deleteMany({username});
+    await Master.deleteOne({ username });
+   await Relationship.deleteOne({ username });
+
+
+   // Delete user from Bookmark table if friend_username or current_username matches username
+   await Bookmark.deleteMany({ $or: [{ friend_username: username }, { current_username: username }] });
+
+
+
+    // Remove the user's ID from the likes array of any post
+    await Post.updateMany(
+      { likes: id_user },
+      { $pull: { likes: id_user } }
+    );
+    
+
+ // Remove the user's ID from the comment array of any post
+    await Post.updateMany(
+      { 'comments.user': user._id },
+      { $pull: { comments: { user: user._id } } }
+    );
+
+
+console.log('Sucesss!!');
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 module.exports = router;
