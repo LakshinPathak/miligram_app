@@ -553,6 +553,31 @@ nav a:hover {
     background-color: #ff811a;
 }
 
+#changeProfileImageButton {
+  background-color: #008CBA; /* Blue */
+  border: 2px solid #008CBA;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition-duration: 0.4s;
+}
+
+#changeProfileImageButton:hover {
+  background-color: white;
+  color: #008CBA;
+}
+
+#profileImageInput {
+  display: none;
+}
+
+
   </style>
 </head>
 <body>
@@ -580,6 +605,10 @@ nav a:hover {
 
 
     <button class="delete-btn" onclick="deleteUser(this)">Delete</button>
+
+    <button id="changeProfileImageButton">Change Profile Image</button>
+<input type="file" id="profileImageInput" style="display: none;" />
+
     <!-- <div class="profile-posts" id="profile-posts"> -->
       <!-- User posts will be loaded here -->
 
@@ -1098,6 +1127,44 @@ function viewFollowersFollowing(type) {
   }
 
 
+
+
+
+
+
+  document.getElementById('changeProfileImageButton').addEventListener('click', function() {
+    document.getElementById('profileImageInput').click();
+  });
+
+  document.getElementById('profileImageInput').addEventListener('change', async function(event) {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+  //  formData.append('loginUsername', sessionStorage.getItem('loginUsername'));
+
+    try {
+      const response = await fetch(`/api/posts/change_profile_image/${username_profile}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        document.getElementById('profile-avatar').src = data.imageUrl;
+       // document.getElementById('profile-avatar').src = data.profileImageUrl || 'assets/img/default-profile.png';
+
+        alert('Profile image updated successfully');
+      } else {
+        throw new Error('Failed to update profile image');
+      }
+    } catch (error) {
+      console.error('Error updating profile image:', error);
+      alert('Error updating profile image');
+    }
+  });
 
     document.addEventListener('DOMContentLoaded', loadProfile);
   </script>
