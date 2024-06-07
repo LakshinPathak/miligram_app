@@ -4,6 +4,7 @@ const { User, Post, Master, Relationship , Message, Bookmark} = require('../mode
 // const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
 
@@ -31,6 +32,37 @@ const uploadImageToCloudinary = (file) => {
   });
 };
 
+
+
+// Function to send registration email
+async function sendRegistrationEmail(email, username) {
+  try {
+      // Create a transporter with your SMTP server details
+      const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "lakshin2563@gmail.com",
+            pass: "ypoe jrma lcfz pmej",
+          },
+      });
+
+      // Email content
+      const mailOptions = {
+          from: "lakshin2563@gmail.com", // Update with your email
+          to: email,
+          subject: "Welcome to Your Social Media App!",
+          text: `Dear ${username},\n\nWelcome to Your Social Media App! We're thrilled to have you join our community.\n\nWith Your Social Media App, you can connect with friends, share moments, and explore a world of possibilities.\n\nBest regards,\nThe Your Social Media App Team`,
+      };
+
+      // Send email
+      const info = await transporter.sendMail(mailOptions);
+
+      console.log("Email sent: " + info.response);
+  } catch (error) {
+      console.error("Error sending registration email:", error);
+  }
+}
+
 // // Sign Up
 router.post('/signup', upload.single('profileImage'), async (req, res) => {
   try {
@@ -53,6 +85,12 @@ router.post('/signup', upload.single('profileImage'), async (req, res) => {
 
     const newUser_Master = new Master({ username: username, profileImageUrl: profileImageUrl});
     await newUser_Master.save();
+
+
+     // Send welcome email
+     await sendRegistrationEmail(email, username);
+
+
 
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
