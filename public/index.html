@@ -234,8 +234,9 @@ body {
           const loggedInUser = document.getElementById('username').value;
           console.log(loggedInUser);
           sessionStorage.setItem('loginusername',loggedInUser);
-          sessionStorage.setItem('admin_name1',username);
+        //  sessionStorage.setItem('admin_name1',username);
           if (data.isAdmin) {
+            sessionStorage.setItem('admin_name1',username);
                 // Redirect to the Admin dashboard
                window.location.href = `/admin.html`
              } 
