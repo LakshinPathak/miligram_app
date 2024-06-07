@@ -51,6 +51,47 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+// Change Profile Image
+router.post('/change_profile_image/:loginUsername', verifyToken, upload.single('image'), async (req, res) => {
+  try {
+    const { loginUsername } = req.params;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).send({ message: 'No image file uploaded' });
+    }
+
+    const imageUrl = await uploadImageToCloudinary(file);
+
+    // Update profileImageUrl in User and Master collections
+    await User.updateOne({ username: loginUsername }, { profileImageUrl: imageUrl });
+    await Master.updateOne({ username: loginUsername }, { profileImageUrl: imageUrl });
+
+    res.status(200).json({ message: 'Profile image updated successfully', imageUrl });
+  } catch (error) {
+    console.error('Error updating profile image:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
 // Create Post
 router.post('/create_post', verifyToken, upload.single('image'), async (req, res) => {
   try {

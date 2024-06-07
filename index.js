@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const port = 3000;
