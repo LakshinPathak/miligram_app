@@ -254,7 +254,7 @@ router.post('/like/:postId', verifyToken, async (req, res) => {
 // Like a post from feed
 router.post('/like2/:postId', verifyToken, async (req, res) => {
   try {
-    console.log("lp1");
+   // console.log("lp1");
     const { postId } = req.params;
 
     const{currentUserUsername}=req.body;
@@ -292,7 +292,7 @@ router.post('/like2/:postId', verifyToken, async (req, res) => {
 router.post('/unlike2/:postId', verifyToken, async (req, res) => {
   try {
     
-    console.log("lp2");
+   // console.log("lp2");
 
     const { postId } = req.params;
     const{currentUserUsername}=req.body;
@@ -370,7 +370,7 @@ router.post('/fetch_like/:username', async (req, res) => {
     const { username } = req.params;
     const { post_id, currentusername} = req.body;
 
-    console.log("lp3");
+   //  console.log("lp3");
 
     // Find the user by their username
     const user = await User.findOne({ username });
@@ -493,8 +493,8 @@ router.delete('/delete_comment/:postId/:commentId', verifyToken, async (req, res
 router.get('/search', async (req, res) => {
   const queryString = req.query.query;
   
-  console.log("mishra1");
-  console.log(queryString);
+  
+
 
   try {
       const users = await User.find({

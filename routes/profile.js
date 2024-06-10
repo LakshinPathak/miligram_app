@@ -196,7 +196,7 @@ router.get('/bookmarks/:username', async (req, res) => {
 // DELETE route to remove a bookmarked post
 router.delete('/delete_bookmark/:postId', async (req, res) => {
   const { postId } = req.params;
-  console.log(postId+"mishra12345");
+ 
   try {
       // Find the bookmarked post by its ID and remove it
       await Bookmark.findOneAndDelete({ id_post: postId });

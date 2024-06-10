@@ -112,7 +112,7 @@ router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    console.log('Login request:', username, password);
+    
 
     // Check if user exists
     const user = await User.findOne({ username });
@@ -121,7 +121,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid Username' });
     }
 
-    console.log('User found:', user);
+  
 
     
 
@@ -136,7 +136,7 @@ router.post('/login', async (req, res) => {
 
     // Sign JWT token
     const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' });
-    console.log('Token generated:', token);
+   // console.log('Token generated:', token);
 
     res.status(200).json({ token, username: user.username, isAdmin: user.isAdmin });
   } catch (error) {
@@ -437,7 +437,7 @@ router.delete('/:username/delete_user', verifyToken, verifyAdmin, async (req, re
     );
 
 
-console.log('Sucesss!!');
+
 
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
@@ -467,7 +467,7 @@ console.log('Sucesss!!');
 router.delete('/delete_user_from_profile', verifyToken, async (req, res) => {
   try {
     const { username } = req.body;
-    console.log("kajal1234"+ username);
+    
 
     
     const user = await User.findOne({username:username });
@@ -523,7 +523,7 @@ router.delete('/delete_user_from_profile', verifyToken, async (req, res) => {
     );
 
 
-console.log('Sucesss!!');
+
 
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
