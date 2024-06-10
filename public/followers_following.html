@@ -306,8 +306,8 @@ body {
   </div>
   <script>
     const username_profile = sessionStorage.getItem("loginusername");
-    console.log(username_profile);
 
+    
     async function loadFollowersAndFollowing() {
       try {
         const response = await fetch(`/api/profile/followers_following/${username_profile}`, {
@@ -319,8 +319,8 @@ body {
         });
 
         const data = await response.json();
-        console.log(data);
 
+        
         const followersTable =  document.getElementById('followers-table').getElementsByTagName('tbody')[0] ;
         const followingTable = document.getElementById('following-table').getElementsByTagName('tbody')[0] ;
         followersTable.innerHTML = '';
@@ -369,8 +369,8 @@ body {
         });
 
         const result = await response.json();
-        console.log(result);
 
+        
         // Reload followers and following list
         loadFollowersAndFollowing();
       } catch (error) {
@@ -390,8 +390,8 @@ body {
         });
 
         const result = await response.json();
-        console.log(result);
 
+        
         // Reload followers and following list
         loadFollowersAndFollowing();
       } catch (error) {

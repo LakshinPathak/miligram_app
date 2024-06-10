@@ -17,9 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
   
-      console.log('New Email:', newEmail);
-      console.log('New Password:', newPassword);
-      console.log('Username:', loggedInUser);
+      
   
       try {
         // Perform AJAX request to the server settings endpoint
@@ -37,11 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
   
         const result = await response.json();
   
-        console.log('Response from server:', result);
+       
   
         // Handle success or error response from the server
         if (result.success) {
-          console.log('Settings update successful!');
+
+          
           alert(result.message);
   
           // Redirect to the dashboard after saving settings

@@ -675,8 +675,8 @@ nav a:hover {
 
   <script>
     const username_profile = sessionStorage.getItem("loginusername");
-    console.log(username_profile);
 
+    
 
    // const username3 = sessionStorage.getItem("loginusername");
 
@@ -688,11 +688,11 @@ nav a:hover {
 
     async function deleteUser( button) {
 
-      console.log(button);
+    
 
        const username = sessionStorage.getItem("loginusername");
-       console.log(username);
 
+       
 
       if (!confirm('Are you sure you want to delete this user?')) {
         return;
@@ -736,9 +736,8 @@ nav a:hover {
         });
 
         const data = await response.json();
-        console.log(data.profileImageUrl);
-        console.log(data);
 
+        
         document.getElementById('username').innerText = data.username || "Username";
         document.getElementById('profile-avatar').src = data.profileImageUrl || 'assets/img/default-profile.png';
 
@@ -764,7 +763,7 @@ nav a:hover {
             }
         });
           const countdata= await countResponse.json();
-          //console.log(countdata);
+        
          
 
     document.getElementById('follower-count').innerText = countdata.followers   
@@ -777,7 +776,8 @@ nav a:hover {
 
     async function fun2(post_id,username, currentusername)
     {
-console.log(currentusername);
+
+
       try {
     const response = await fetch(`/api/posts/fetch_like/${username}`, {
       method: 'POST',
@@ -790,7 +790,7 @@ console.log(currentusername);
 
     if (response.ok) {
     const data = await response.json();
-    console.log(data);
+
     
   return data;   
    
@@ -806,22 +806,20 @@ console.log(currentusername);
  async function func(post_id, username, currentusername)
  {
 const likeButtons = document.querySelectorAll(`#like-btn-${post_id}`);
-    console.log(likeButtons);
+
 
 likeButtons.forEach(button => {
 
       (async () => {
   try {
 
-    console.log(currentusername);
+    
     var isliked =await  fun2(post_id,username, currentusername);
-     console.log(isliked);
-     console.log("jheekf");
+    
 
        if (isliked.isliked === true) 
        {  
-        console.log("sef")
-        console.log(isliked.size);
+       
       //  button.textContent = isliked ? 'Like' : 'UnLike';
         button.textContent = 'UnLike';
         button.classList.add('liked');
@@ -829,7 +827,7 @@ likeButtons.forEach(button => {
       }
 
       const likecount = document.querySelectorAll(`#like-count-${post_id}`);
-      console.log(likecount);
+     
       likecount.forEach(button => {
 
         button.textContent = "Like Count: "+ isliked.size;
@@ -866,11 +864,7 @@ likeButtons.forEach(button => {
         const postsData = await postsResponse.json();
        
 
-        // for (let i = 0; i < postsData.length; i++) {
-
-        //   console.log(postsData[i]._id);
-        // }
-        
+     
 
         const postsContainer = document.querySelector('.posts');
 

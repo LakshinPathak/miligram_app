@@ -130,8 +130,8 @@ const urlParams = new URLSearchParams(window.location.search);
       //const username = urlParams.get("admin_name");
       // if  ( isScript6) {
         const username =  sessionStorage.getItem("admin_name1");
-       // console.log(username);
-        console.log(username+"heloooo");
+      
+       
         document.getElementById('username1').innerHTML = `Hello: ${username}`;
 
       // }
@@ -155,9 +155,9 @@ const urlParams = new URLSearchParams(window.location.search);
         }
 
         const users = await response.json();
-        console.log(users);
-       console.log("kk"); 
-        const usersTable = document.getElementById('users-table').querySelector('tbody');
+
+        
+       const usersTable = document.getElementById('users-table').querySelector('tbody');
         usersTable.innerHTML = '';
 
         users.forEach(user => {
@@ -202,7 +202,8 @@ const urlParams = new URLSearchParams(window.location.search);
         }
 
         const data = await response.json();
-        console.log('User updated successfully:', data);
+
+        
         alert('User updated successfully');
         window.location.reload(true);
       } catch (error) {
@@ -230,13 +231,16 @@ const urlParams = new URLSearchParams(window.location.search);
         }
 
         const data = await response.json();
-        console.log('User deleted successfully:', data);
+
+        
         alert('User deleted successfully');
         window.location.reload(true);
         const row = button.parentNode.parentNode;
         row.parentNode.removeChild(row);
       } catch (error) {
+        
         console.error('Error deleting user:', error);
+
         alert('Failed to delete user');
       }
     }

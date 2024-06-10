@@ -155,95 +155,6 @@
 
     document.addEventListener('DOMContentLoaded', loadChats);
 
-    // async function loadChats() {
-    //   try {
-    //     const response = await fetch(`/api/message_chat/fetch_fusers`, {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': 'Bearer ' + localStorage.getItem('token')
-    //       },
-    //       body: JSON.stringify({ username_profile })
-    //     });
-    //     const data = await response.json();
-    //     const uniqueStrings = findUniqueStrings(data[0].following, data[0].followers);
-    //     const chatList = document.getElementById('chat-list');
-
-    //     for (const it of uniqueStrings) {
-    //       const chatItemContainer = document.createElement('div');
-    //       chatItemContainer.classList.add('chat-item-container');
-
-    //       const chatItem = document.createElement('div');
-    //       chatItem.classList.add('chat-list-item');
-    //       chatItem.onclick = () => loadMessages(it);
-    //       chatItem.innerText = it;
-
-    //       const profileImage = document.createElement('img');
-    //       profileImage.src = (await fun3(it))[0].profileImageUrl;
-    //       profileImage.classList.add('profile-logo');
-
-    //       const bio_text= (await fun4(it))[0].bio;
-    //       console.log(bio_text);
-
-    //       chatItemContainer.appendChild(profileImage);
-    //       chatItemContainer.appendChild(chatItem);
-    //       chatList.appendChild(chatItemContainer);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching chats:', error);
-    //   }
-    // }
-
-
-
-
-//     async function loadChats() {
-//   try {
-//     const response = await fetch(`/api/message_chat/fetch_fusers`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer ' + localStorage.getItem('token')
-//       },
-//       body: JSON.stringify({ username_profile })
-//     });
-//     const data = await response.json();
-//     const uniqueStrings = findUniqueStrings(data[0].following, data[0].followers);
-//     const chatList = document.getElementById('chat-list');
-
-//     for (const it of uniqueStrings) {
-//       const chatItemContainer = document.createElement('div');
-//       chatItemContainer.classList.add('chat-item-container');
-
-//       const chatItem = document.createElement('div');
-//       chatItem.classList.add('chat-list-item');
-//       chatItem.onclick = () => loadMessages(it);
-//       chatItem.innerText = it;
-
-//       const profileImage = document.createElement('img');
-//       profileImage.src = (await fun3(it))[0].profileImageUrl;
-//       profileImage.classList.add('profile-logo');
-
-//       const bio_text = (await fun4(it))[0].bio;
-//       console.log(bio_text);
-
-//       const bioTextSpan = document.createElement('span');
-//       bioTextSpan.classList.add('bio-text');
-//       bioTextSpan.innerText = bio_text;
-
-//       chatItemContainer.appendChild(profileImage);
-//       chatItemContainer.appendChild(chatItem);
-//       chatItemContainer.appendChild(bioTextSpan);
-//       chatList.appendChild(chatItemContainer);
-//     }
-//   } catch (error) {
-//     console.error('Error fetching chats:', error);
-//   }
-// }
-
-
-
-
 
 
 async function loadChats() {
@@ -277,7 +188,6 @@ async function loadChats() {
       chatItem.innerText = it;
 
       const bio_text = (await fun4(it))[0].bio;
-      console.log(bio_text);
 
       const bioTextSpan = document.createElement('span');
       bioTextSpan.classList.add('bio-text');
@@ -293,80 +203,6 @@ async function loadChats() {
     console.error('Error fetching chats:', error);
   }
 }
-
-
-
-
-    // async function loadMessages(username) {
-    //   currentChatUser = username;
-    //   console.log(currentChatUser);
-    //   const response = await fetch(`/api/message_chat/fetch_messages`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': 'Bearer ' + localStorage.getItem('token')
-    //     },
-    //     body: JSON.stringify({  username_profile, username })
-    //   });
-    //   const messages = await response.json();
-    //   const messagesContainer = document.getElementById('messages');
-    //   messagesContainer.innerHTML = '';
-
-    //   messages.forEach(message => {
-    //     const messageElement = document.createElement('div');
-    //     messageElement.classList.add('message');
-    //     messageElement.classList.add(message.userid === username_profile ? 'sent' : 'received');
-    //     messageElement.innerText = message.message_text;
-    //     messagesContainer.appendChild(messageElement);
-    //   });
-
-    // }
-
-
-
-
-
-
-//     async function loadMessages(username) {
-//   currentChatUser = username;
-//   const response = await fetch(`/api/message_chat/fetch_messages`, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Authorization': 'Bearer ' + localStorage.getItem('token')
-//     },
-//     body: JSON.stringify({ username_profile, username })
-//   });
-//   const messages = await response.json();
-//   const messagesContainer = document.getElementById('messages');
-//   messagesContainer.innerHTML = '';
-
-//   messages.forEach(message => {
-//     const messageElement = document.createElement('div');
-//     messageElement.classList.add('message');
-//     messageElement.classList.add(message.userid.username === username_profile ? 'sent' : 'received');
-
-//     // Create an element for the username
-//     const usernameElement = document.createElement('span');
-//     usernameElement.classList.add('message-username');
-//     usernameElement.innerText = message.userid.username;
-
-//     // Create an element for the message text
-//     const messageTextElement = document.createElement('span');
-//     messageTextElement.classList.add('message-text');
-//     messageTextElement.innerText = message.message_text;
-
-//     // Append the username and message text to the message element
-//     messageElement.appendChild(usernameElement);
-//     messageElement.appendChild(messageTextElement);
-
-//     messagesContainer.appendChild(messageElement);
-//   });
-
-  
-// }
-
-
 
 
 
@@ -428,7 +264,8 @@ async function loadMessages(username) {
 
 
     async function sendMessage() {
-      console.log(currentChatUser);
+
+      
       const messageInput = document.getElementById('message-input');
       const message_content = messageInput.value;
       if (!message_content.trim()) return;

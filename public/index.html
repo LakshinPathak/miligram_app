@@ -15,13 +15,16 @@
 a {
   text-decoration: none;
 }
+
 img {
   max-width: 100%;
   height: auto;
 }
+
 html {
   font-size: 14px;
 }
+
 body {
   background-color: #fafafa;
   color: #262626;
@@ -226,16 +229,18 @@ body {
         });
 
         const data = await response.json();
-        console.log(data);
+
         
         if (data.token) {
           localStorage.setItem('token', data.token);
           
           const loggedInUser = document.getElementById('username').value;
-          console.log(loggedInUser);
+
+          
           sessionStorage.setItem('loginusername',loggedInUser);
-        //  sessionStorage.setItem('admin_name1',username);
-          if (data.isAdmin) {
+
+         
+        if (data.isAdmin) {
             sessionStorage.setItem('admin_name1',username);
                 // Redirect to the Admin dashboard
                window.location.href = `/admin.html`

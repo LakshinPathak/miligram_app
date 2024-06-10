@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (isScript1 || isScript2 || isScript3 || isScript4) {
     const username =  sessionStorage.getItem("loginusername") ;
     //loginusername2
-    console.log(username);
+   
     document.getElementById('username1').textContent = `${username}`;
 
     try {
@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', async function () {
       });
 
       const data = await response.json();
-      console.log(data.profileImageUrl);
 
+     
       if (data.profileImageUrl) {
         document.getElementById('profileImage').src = data.profileImageUrl;
       } else {
@@ -116,7 +116,7 @@ try {
   const data = await response.json();
 
 
-  console.log(data.following);
+
 
 
   for(var i=0;i<data.following.length;i++)
@@ -178,7 +178,6 @@ async function func(username,currentUserUsername)
 
     if (response.ok) {
     const data = await response.json();
-    console.log(data);
     
   return data.isFollowing   
    
@@ -194,14 +193,18 @@ async function func(username,currentUserUsername)
 const followButtons = document.querySelectorAll('.follow-btn');
 followButtons.forEach(button => {
     const username = button.dataset.username;
+
  //   const isFollowed = sessionStorage.getItem(`${currentUserUsername}-${username}-followed`);
   
 (async () => {
   try {
       const isFollowing = await func(username, currentUserUsername);
-      console.log(isFollowing);
-      if (isFollowing === true) {
-          console.log("hiiii");
+
+      
+    
+    
+    if (isFollowing === true) {
+         
           button.textContent = 'Unfollow';
           button.classList.add('unfollow');
       }
@@ -247,7 +250,7 @@ async function unfollowUser(username, button) {
 
 async function fun2(post_id,username, currentusername)
 {
-console.log(currentusername);
+
   try {
 const response = await fetch(`/api/posts/fetch_like/${username}`, {
   method: 'POST',
@@ -260,7 +263,8 @@ const response = await fetch(`/api/posts/fetch_like/${username}`, {
 
 if (response.ok) {
 const data = await response.json();
-console.log(data);
+
+
 
 return data;   
 
@@ -278,26 +282,28 @@ async function fun1(post_id, username, currentusername)
 {
 
   const likeButtons = document.querySelectorAll(`#like-button-id-${post_id}`);
-  console.log(likeButtons);
+
+
 
   likeButtons.forEach(button => {
 
     (async () => {
 try {
 
-  console.log(currentusername);
+
   var isliked =await  fun2(post_id,username, currentusername);
-   console.log(isliked);
-   console.log("jheekf");
+  
 
      if (isliked.isliked === true) 
      {  
-      console.log("sef")
-      console.log(isliked.size);
+      
     //  button.textContent = isliked ? 'Like' : 'UnLike';
+
       button.textContent = 'UnLike';
       button.classList.remove('like-button-class');
+
      // button.classList.remove('liked');
+    
     }
 
 
@@ -328,10 +334,6 @@ async function loadUserPosts(username) {
       const feedPostsContainer = document.getElementById('feed-posts');
 
 
-      //console.log(postsData);
-      //console.log("lakshit1234");
-      // Clear previous posts
-     // feedPostsContainer.innerHTML = '';
 
       // Append new posts
       postsData.forEach(post => {
@@ -448,11 +450,14 @@ async function loadUserPosts(username) {
 
 
   async function postComment(postId, comment, commentsSection) {
-  console.log(postId);
-  console.log("hereeeeeeee");
+
+
+
+  
 
   const currentUserUsername = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
-  console.log(currentUserUsername);
+ 
+
   
   try{
 
@@ -467,9 +472,6 @@ async function loadUserPosts(username) {
 
     if (response.ok) {
       const data = await  response.json();
-     // console.log(data.person_name);
-      //console.log(data.text);
-      console.log("Comment Added!!!!");
       window.location.reload(true);
     } else {
       console.error('Error Adding Comment:', response.statusText);
@@ -489,7 +491,7 @@ async function loadUserPosts(username) {
 
   async function bookmarkPost(postId, postUsername) {
     try {
-      console.log(postId+ postUsername);
+     
 
         const response = await fetch('/api/posts/bookmark_post', {
             method: 'POST',
@@ -543,8 +545,8 @@ async function loadUserPosts(username) {
 
 async function postlike(postId)
 {
-  console.log(postId);
 
+ 
   const currentUserUsername = urlParams.get("fusername") || sessionStorage.getItem("loginusername");
 
   try{
@@ -555,8 +557,11 @@ async function postlike(postId)
     const likeButton = document.querySelector(`#like-button-id-${postId}`);
 
       const isLiked = likeButton.classList.contains('like-button-class');
-      console.log(isLiked);
-      //${isLiked ? 'UnLike2' : 'like2'}
+
+
+    
+
+
      const  response = await fetch(`/api/posts/${isLiked ? 'like2' : 'Unlike2'}/${postId}`,
      {
 
@@ -571,11 +576,6 @@ async function postlike(postId)
 
 
     if (response.ok) {
-
-      //console.log("Post liked successfully");
-
-    //  likeButton.classList.remove(`like-button-class`);
-     // likeButton.textContent='Unlike';
       window.location.reload(true);
     
     } else {
@@ -608,65 +608,12 @@ async function postlike(postId)
   });
 
 
-// const searchInput = document.getElementById('searchInput');
-// const searchResults = document.getElementById('searchResults');
-
-// searchInput.addEventListener('input', async () => {
-//     const searchString = searchInput.value.trim();
-
-//     if (searchString.length === 0) {
-//         // Clear search results if input is empty
-//         searchResults.innerHTML = '';
-//         return;
-//     }
-
-//     try {
-//         const response = await fetch(`/api/posts/search?query=${searchString}`, {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 // Add authorization header if needed
-//             }
-//         });
-
-//         if (response.ok) {
-//             const users = await response.json();
-//             displaySearchResults(users);
-//         } else {
-//             console.error('Failed to fetch search results:', response.statusText);
-//         }
-//     } catch (error) {
-//         console.error('Error searching for users:', error);
-//     }
-// });
-
-// function displaySearchResults(users) {
-//     // Clear previous search results
-//     searchResults.innerHTML = '';
-
-//     if (users.length === 0) {
-//         searchResults.innerHTML = '<p>No users found</p>';
-//         return;
-//     }
-
-//     users.forEach(user => {
-//         const userCard = document.createElement('div');
-//         userCard.classList.add('user-card');
-//         userCard.innerHTML = `
-//             <img src="${user.profileImageUrl}" alt="Profile Image">
-//             <div>
-//                 <h3>${user.username}</h3>
-//                 <p>${user.bio}</p>
-//             </div>
-//         `;
-//         searchResults.appendChild(userCard);
-//     });
-// }
 
 
 
 
-    //below working at 13:50
+
+  
 
 const searchBar = document.getElementById('search-bar');
 const searchResults = document.getElementById('search-results');
