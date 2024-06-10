@@ -256,7 +256,8 @@ body {
     <main class="l-main">
         <div class="l-user">
             <div class="c-panel group">
-                <img class="c-panel__img" src="assets/img/instagram.svg" alt="Instagram">
+               
+                <img class="c-panel__img" src="PicPostChat1.gif" alt="Instagram">
                 <div class="c-panel__form">
                     <input type="text" class="c-panel__input" id="username" placeholder="Username" required>
                     <input type="email" class="c-panel__input" id="email" placeholder="Email" required>
@@ -278,8 +279,11 @@ body {
             const bio = document.getElementById('bio').value;
 
 
+            var i=0;
+
             if(!password || !username || !email)
             {
+              i=1;
               alert('Username, Password, Email is compulsary');
             }
             const formData = new FormData();
@@ -305,8 +309,12 @@ body {
               
                  }
               else{
-                alert("Username Exists!!!")
-                //alert.log("Error in SignUp!!!");
+                if(i==0)
+                {
+                  alert("Username Exists!!!")
+
+                }
+                                //alert.log("Error in SignUp!!!");
               }    
                 
             } catch (error) {
